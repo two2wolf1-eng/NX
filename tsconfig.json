@@ -1,0 +1,64 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/web"
+    },
+    {
+      "path": "./apps/admin"
+    },
+    {
+      "path": "./apps/marketing"
+    },
+    {
+      "path": "./apps/worker"
+    },
+    {
+      "path": "./apps/secret-service"
+    },
+    {
+      "path": "./apps/ai-indexer"
+    },
+    {
+      "path": "./libs/shared/ui"
+    },
+    {
+      "path": "./libs/shared/config"
+    },
+    {
+      "path": "./libs/shared/validations"
+    },
+    {
+      "path": "./libs/shared/utils"
+    },
+    {
+      "path": "./libs/data-access/supabase-biz"
+    },
+    {
+      "path": "./libs/data-access/supabase-secret"
+    },
+    {
+      "path": "./libs/domain/tenant"
+    },
+    {
+      "path": "./libs/domain/billing"
+    },
+    {
+      "path": "./libs/domain/secret"
+    },
+    {
+      "path": "./libs/contracts/db-types-biz"
+    },
+    {
+      "path": "./libs/contracts/db-types-secret"
+    },
+    {
+      "path": "./libs/testing/fixtures"
+    },
+    {
+      "path": "./libs/testing/utils"
+    }
+  ]
+}

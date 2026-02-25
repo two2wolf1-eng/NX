@@ -1,0 +1,62 @@
+{
+  "name": "supabase-biz",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/supabase-biz",
+  "sourceRoot": "apps/supabase-biz/supabase",
+  "projectType": "application",
+  "tags": ["type:infra", "data:biz", "scope:shared"],
+  "targets": {
+    "build": {
+      "executor": "nx:noop"
+    },
+    "test": {
+      "executor": "nx:noop"
+    },
+    "lint": {
+      "executor": "nx:noop"
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz start"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz stop"
+      }
+    },
+    "status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz status"
+      }
+    },
+    "db-diff": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz db-diff"
+      }
+    },
+    "gen-types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz gen-types"
+      }
+    },
+    "pack-migrations": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/migrations/supabase-biz"],
+      "options": {
+        "command": "node tools/scripts/pack-migrations.mjs supabase-biz apps/supabase-biz/supabase"
+      }
+    },
+    "migrate-prod": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-biz migrate-prod"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+services:
+  opengrok:
+    image: opengrok/docker:latest
+    container_name: nx-code-search
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../../..:/workspace:ro
+      - ./data:/opengrok/data

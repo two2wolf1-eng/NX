@@ -1,0 +1,112 @@
+{
+    "name":  "secret-service",
+    "$schema":  "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot":  "apps/secret-service/src",
+    "projectType":  "application",
+    "tags":  [
+                 "type:app",
+                 "scope:secret",
+                 "layer:data-access",
+                 "data:secret"
+             ],
+    "targets":  {
+                    "build":  {
+                                  "executor":  "@nx/esbuild:esbuild",
+                                  "outputs":  [
+                                                  "{options.outputPath}"
+                                              ],
+                                  "defaultConfiguration":  "production",
+                                  "options":  {
+                                                  "platform":  "node",
+                                                  "outputPath":  "apps/secret-service/dist",
+                                                  "format":  [
+                                                                 "cjs"
+                                                             ],
+                                                  "bundle":  false,
+                                                  "main":  "apps/secret-service/src/main.ts",
+                                                  "tsConfig":  "apps/secret-service/tsconfig.app.json",
+                                                  "assets":  [
+                                                                 "apps/secret-service/src/assets"
+                                                             ],
+                                                  "esbuildOptions":  {
+                                                                         "sourcemap":  true,
+                                                                         "outExtension":  {
+                                                                                              ".js":  ".js"
+                                                                                          }
+                                                                     }
+                                              },
+                                  "configurations":  {
+                                                         "development":  {
+
+                                                                         },
+                                                         "production":  {
+                                                                            "esbuildOptions":  {
+                                                                                                   "sourcemap":  false,
+                                                                                                   "outExtension":  {
+                                                                                                                        ".js":  ".js"
+                                                                                                                    }
+                                                                                               }
+                                                                        }
+                                                     }
+                              },
+                    "prune-lockfile":  {
+                                           "dependsOn":  [
+                                                             "build"
+                                                         ],
+                                           "cache":  true,
+                                           "executor":  "@nx/js:prune-lockfile",
+                                           "outputs":  [
+                                                           "{workspaceRoot}/apps/secret-service/dist/package.json",
+                                                           "{workspaceRoot}/apps/secret-service/dist/package-lock.json"
+                                                       ],
+                                           "options":  {
+                                                           "buildTarget":  "build"
+                                                       }
+                                       },
+                    "copy-workspace-modules":  {
+                                                   "dependsOn":  [
+                                                                     "build"
+                                                                 ],
+                                                   "cache":  true,
+                                                   "outputs":  [
+                                                                   "{workspaceRoot}/apps/secret-service/dist/workspace_modules"
+                                                               ],
+                                                   "executor":  "@nx/js:copy-workspace-modules",
+                                                   "options":  {
+                                                                   "buildTarget":  "build"
+                                                               }
+                                               },
+                    "prune":  {
+                                  "dependsOn":  [
+                                                    "prune-lockfile",
+                                                    "copy-workspace-modules"
+                                                ],
+                                  "executor":  "nx:noop"
+                              },
+                    "serve":  {
+                                  "continuous":  true,
+                                  "executor":  "@nx/js:node",
+                                  "defaultConfiguration":  "development",
+                                  "dependsOn":  [
+                                                    "build"
+                                                ],
+                                  "options":  {
+                                                  "buildTarget":  "secret-service:build",
+                                                  "runBuildTargetDependencies":  false
+                                              },
+                                  "configurations":  {
+                                                         "development":  {
+                                                                             "buildTarget":  "secret-service:build:development"
+                                                                         },
+                                                         "production":  {
+                                                                            "buildTarget":  "secret-service:build:production"
+                                                                        }
+                                                     }
+                              },
+                    "test":  {
+                                 "options":  {
+                                                 "passWithNoTests":  true
+                                             }
+                             }
+                }
+}

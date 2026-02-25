@@ -1,0 +1,16 @@
+{
+    "name":  "domain-billing",
+    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot":  "libs/domain/billing/src",
+    "projectType":  "library",
+    "tags":  [
+                 "type:lib",
+                 "layer:domain",
+                 "data:biz",
+                 "scope:shared"
+             ],
+    "// targets":  "to see all targets run: nx show project @nx/billing --web",
+    "targets":  {
+
+                }
+}

@@ -1,0 +1,16 @@
+{
+    "name":  "contracts-db-types-secret",
+    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot":  "libs/contracts/db-types-secret/src",
+    "projectType":  "library",
+    "tags":  [
+                 "type:lib",
+                 "layer:contract",
+                 "data:secret",
+                 "scope:shared"
+             ],
+    "// targets":  "to see all targets run: nx show project @nx/db-types-secret --web",
+    "targets":  {
+
+                }
+}

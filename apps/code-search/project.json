@@ -1,0 +1,43 @@
+{
+  "name": "code-search",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/code-search",
+  "sourceRoot": "apps/code-search/opengrok",
+  "projectType": "application",
+  "tags": ["type:infra", "scope:shared"],
+  "targets": {
+    "build": {
+      "executor": "nx:noop"
+    },
+    "test": {
+      "executor": "nx:noop"
+    },
+    "lint": {
+      "executor": "nx:noop"
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/code-search/opengrok/docker-compose.yml up -d"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/code-search/opengrok/docker-compose.yml down"
+      }
+    },
+    "reindex": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/code-search/opengrok/docker-compose.yml exec -T opengrok sh -lc \"echo Reindex placeholder\""
+      }
+    },
+    "health": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/code-search/opengrok/docker-compose.yml ps"
+      }
+    }
+  }
+}

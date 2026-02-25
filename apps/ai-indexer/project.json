@@ -1,0 +1,107 @@
+{
+  "name": "ai-indexer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ai-indexer/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:shared", "layer:shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/ai-indexer",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/ai-indexer/src/main.ts",
+        "tsConfig": "apps/ai-indexer/tsconfig.app.json",
+        "assets": ["apps/ai-indexer/src/assets"],
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "prune-lockfile": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "executor": "@nx/js:prune-lockfile",
+      "outputs": [
+        "{workspaceRoot}/dist/apps/ai-indexer/package.json",
+        "{workspaceRoot}/dist/apps/ai-indexer/package-lock.json"
+      ],
+      "options": {
+        "buildTarget": "build"
+      }
+    },
+    "copy-workspace-modules": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "outputs": ["{workspaceRoot}/dist/apps/ai-indexer/workspace_modules"],
+      "executor": "@nx/js:copy-workspace-modules",
+      "options": {
+        "buildTarget": "build"
+      }
+    },
+    "prune": {
+      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
+      "executor": "nx:noop"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ai-indexer:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ai-indexer:build:development"
+        },
+        "production": {
+          "buildTarget": "ai-indexer:build:production"
+        }
+      }
+    },
+    "sync": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/docs/agent-index/manifest.jsonl",
+        "{workspaceRoot}/docs/agent-index/chunks.jsonl",
+        "{workspaceRoot}/docs/agent-index/meta.json"
+      ],
+      "options": {
+        "command": "node dist/apps/ai-indexer/main.js sync"
+      }
+    },
+    "validate": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node dist/apps/ai-indexer/main.js validate"
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}

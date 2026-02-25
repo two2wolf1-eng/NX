@@ -1,0 +1,34 @@
+{
+  "name": "admin-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/admin-e2e",
+  "sourceRoot": "apps/admin-e2e/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:admin"],
+  "targets": {
+    "build": {
+      "executor": "nx:noop"
+    },
+    "test": {
+      "executor": "nx:noop"
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/admin-e2e",
+        "command": "eslint ."
+      }
+    },
+    "e2e": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{projectRoot}/test-output/playwright/output",
+        "{projectRoot}/test-output/playwright/report"
+      ],
+      "options": {
+        "cwd": "apps/admin-e2e",
+        "command": "playwright test"
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "supabase-secret",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/supabase-secret",
+  "sourceRoot": "apps/supabase-secret/supabase",
+  "projectType": "application",
+  "tags": ["type:infra", "data:secret", "scope:secret"],
+  "targets": {
+    "build": {
+      "executor": "nx:noop"
+    },
+    "test": {
+      "executor": "nx:noop"
+    },
+    "lint": {
+      "executor": "nx:noop"
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret start"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret stop"
+      }
+    },
+    "status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret status"
+      }
+    },
+    "db-diff": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret db-diff"
+      }
+    },
+    "gen-types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret gen-types"
+      }
+    },
+    "pack-migrations": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/migrations/supabase-secret"],
+      "options": {
+        "command": "node tools/scripts/pack-migrations.mjs supabase-secret apps/supabase-secret/supabase"
+      }
+    },
+    "migrate-prod": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/supabase-placeholder.mjs supabase-secret migrate-prod"
+      }
+    }
+  }
+}

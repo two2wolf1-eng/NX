@@ -1,0 +1,34 @@
+name: Index Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Sync Index
+        run: npx nx run ai-indexer:sync
+
+      - name: Verify Index Is Committed
+        run: git diff --exit-code docs/agent-index
+
+      - name: Validate Index
+        run: npx nx run ai-indexer:validate

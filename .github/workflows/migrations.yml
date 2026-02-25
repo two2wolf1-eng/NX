@@ -1,0 +1,37 @@
+name: Migration Bundle
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  pack-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Pack Biz Migrations
+        run: npx nx run supabase-biz:pack-migrations
+
+      - name: Pack Secret Migrations
+        run: npx nx run supabase-secret:pack-migrations
+
+      - name: Upload Migration Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-bundles
+          path: dist/migrations/**

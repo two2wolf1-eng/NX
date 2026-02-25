@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Start Nx Cloud CI Run
+        run: npx nx-cloud start-ci-run
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Affected Lint Test Build
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="HEAD~1"
+          fi
+          npx nx affected -t lint test build --base="$BASE" --head=HEAD
+
+      - name: Affected E2E On Main
+        if: github.ref == 'refs/heads/main'
+        run: npx nx affected -t e2e --base=HEAD~1 --head=HEAD
+
+      - name: Fix CI
+        if: always()
+        run: npx nx fix-ci
