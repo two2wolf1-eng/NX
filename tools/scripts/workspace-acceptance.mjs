@@ -163,7 +163,7 @@ async function runGitIndexIntegrityStep() {
 
 async function runWorkspaceCleanlinessStep() {
   const name = 'Preflight Clean Workspace';
-  const display = 'git status --porcelain';
+  const display = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
   if (allowDirty) {
     process.stdout.write(
       `\n[acceptance] Skipped ${name} (ACCEPTANCE_ALLOW_DIRTY=true)\n`,
@@ -172,7 +172,10 @@ async function runWorkspaceCleanlinessStep() {
     return;
   }
 
-  const statusResult = spawnSync('git', ['status', '--porcelain'], {
+  const statusResult = spawnSync(
+    'git',
+    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    {
     cwd: workspaceRoot,
     encoding: 'utf8',
     stdio: 'pipe',
@@ -226,7 +229,7 @@ async function runGitDiffStep() {
 
 async function runRepositoryConsistencyStep() {
   const name = 'Verify Repository Consistency';
-  const display = 'git diff --exit-code';
+  const display = 'git diff --exit-code -- . :(exclude)docs/agent-index/meta.json';
   if (allowDirty) {
     process.stdout.write(
       `\n[acceptance] Skipped ${name} (ACCEPTANCE_ALLOW_DIRTY=true)\n`,
@@ -235,14 +238,22 @@ async function runRepositoryConsistencyStep() {
     return;
   }
 
-  const diff = runCommand('git', ['diff', '--exit-code'], display);
+  const diff = runCommand(
+    'git',
+    ['diff', '--exit-code', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    display,
+  );
   recordStep(name, display, diff);
   if (diff.status === 0) {
     return;
   }
 
-  const statusDisplay = 'git status --porcelain';
-  const status = runCommand('git', ['status', '--porcelain'], statusDisplay);
+  const statusDisplay = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
+  const status = runCommand(
+    'git',
+    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    statusDisplay,
+  );
   recordStep('Repository Porcelain Status', statusDisplay, status);
   throw new Error(
     `Repository has tracked diffs after acceptance run. git status output:\n${

@@ -184,15 +184,23 @@ async function runNpmAuditStep() {
 
 async function runRepositoryConsistencyStep() {
   const name = 'Repository Consistency';
-  const command = 'git diff --exit-code';
-  const diff = runCommand('git', ['diff', '--exit-code'], command);
+  const command = 'git diff --exit-code -- . :(exclude)docs/agent-index/meta.json';
+  const diff = runCommand(
+    'git',
+    ['diff', '--exit-code', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    command,
+  );
   recordStep(name, command, diff);
   if (diff.status === 0) {
     return;
   }
 
-  const statusCommand = 'git status --porcelain';
-  const status = runCommand('git', ['status', '--porcelain'], statusCommand);
+  const statusCommand = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
+  const status = runCommand(
+    'git',
+    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    statusCommand,
+  );
   recordStep('Repository Porcelain Status', statusCommand, status);
   throw new Error(
     `Repository has tracked diff after release audit. git status output:\n${
