@@ -360,13 +360,18 @@ function resolveWorkspaceRoot() {
     throw new Error('Git preflight failed: git root is empty.');
   }
 
-  if (path.resolve(cwd) !== path.resolve(gitRoot)) {
+  if (toComparablePath(cwd) !== toComparablePath(gitRoot)) {
     throw new Error(
       `Git preflight failed: run release audit from git root. cwd=${cwd}, gitRoot=${gitRoot}`,
     );
   }
 
   return gitRoot;
+}
+
+function toComparablePath(targetPath) {
+  const normalized = path.resolve(targetPath).replace(/\\/g, '/');
+  return process.platform === 'win32' ? normalized.toLowerCase() : normalized;
 }
 
 function recordStep(name, command, result) {
