@@ -775,6 +775,7 @@ function getBlobBuffer(blobId: string, cache: Map<string, Buffer>): Buffer {
   const buffer = execFileSync('git', ['cat-file', '-p', blobId], {
     encoding: 'buffer',
     stdio: ['ignore', 'pipe', 'pipe'],
+    maxBuffer: 1024 * 1024 * 64,
   });
   cache.set(blobId, buffer);
   return buffer;
