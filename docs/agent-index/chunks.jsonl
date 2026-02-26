@@ -576,8 +576,8 @@
 {"path":"tools/scripts/release-audit.mjs","start_line":1,"end_line":120,"chunk_hash":"46012d0670ac2f2fc2177304f0ba70f9264b1c6804987e961892360c375c4921"}
 {"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"87d8a7b90987c5f0a82c1b0821f67cf777552003c16653e4aa85b4eb86a8c5c4"}
 {"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"95f159974ffc00b1c93ea632b59fd5d815340fa08fd300e72ffcc81d820bc997"}
-{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"82efa397533ffaf5346de33d332f97002325d3364c86d70b977228a464fbff6b"}
-{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":501,"chunk_hash":"58c02fe40c729d068e0e504d817091dfdf43f2f794f47b126c741b191f5df5e8"}
+{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"d374b2a22a2bebbd171a05bec0c5019f94831e6d577d1b908f1683d9f73ac614"}
+{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":506,"chunk_hash":"0c49dc7dad02f92d9d38f6ebae64687bd153a00cb6f9a5ff9dc6d451f021af07"}
 {"path":"tools/scripts/supabase-placeholder.mjs","start_line":1,"end_line":88,"chunk_hash":"eb2f289c62017eab7e43dbc4f9b7d7b71616e6034b03c833da44b8ff8143735b"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":1,"end_line":120,"chunk_hash":"56f62e6233784e1ee2b9fae97a6c0e970f8e19a20ca61d5fe6c3e53f1933e111"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":121,"end_line":158,"chunk_hash":"47797ea563869f1c15d94a143bbc7c7f22f6ef66ec6550d73f23ccdd765e1c2f"}
