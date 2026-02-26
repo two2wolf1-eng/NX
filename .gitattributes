@@ -1,0 +1,2 @@
+docs/agent-index/*.json text eol=lf
+docs/agent-index/*.jsonl text eol=lf

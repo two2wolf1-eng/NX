@@ -1,16 +1,9 @@
 {
-    "name":  "web",
-    "$schema":  "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "apps/web",
-    "projectType":  "application",
-    "tags":  [
-                 "type:app",
-                 "scope:web",
-                 "layer:ui",
-                 "data:biz"
-             ],
-    "// targets":  "to see all targets run: nx show project @nx/web --web",
-    "targets":  {
-
-                }
+  "name": "web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web",
+  "projectType": "application",
+  "tags": ["type:app", "data:biz", "scope:web"],
+  "// targets": "to see all targets run: nx show project @nx/web --web",
+  "targets": {}
 }

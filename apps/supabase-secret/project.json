@@ -4,7 +4,7 @@
   "root": "apps/supabase-secret",
   "sourceRoot": "apps/supabase-secret/supabase",
   "projectType": "application",
-  "tags": ["type:infra", "data:secret", "scope:secret"],
+  "tags": ["type:infra", "layer:data-access", "data:secret", "scope:secret"],
   "targets": {
     "build": {
       "executor": "nx:noop"

@@ -6,7 +6,7 @@ const [projectName, sourceDirArg] = process.argv.slice(2);
 
 if (!projectName || !sourceDirArg) {
   console.error(
-    'Usage: node tools/scripts/pack-migrations.mjs <project-name> <supabase-dir>'
+    'Usage: node tools/scripts/pack-migrations.mjs <project-name> <supabase-dir>',
   );
   process.exit(1);
 }
@@ -47,7 +47,7 @@ const manifest = {
 await fs.writeFile(
   path.join(outputRoot, 'manifest.json'),
   `${JSON.stringify(manifest, null, 2)}\n`,
-  'utf8'
+  'utf8',
 );
 
 const readme = [

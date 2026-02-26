@@ -1,16 +1,15 @@
-name: Migration Bundle
+name: Acceptance
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'
 
 permissions:
   contents: read
 
 jobs:
-  pack-migrations:
+  acceptance:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,15 +26,19 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Pack Biz Migrations
-        run: npx nx run supabase-biz:pack-migrations
+      - name: Run Workspace Acceptance
+        run: npx nx run workspace-policy:acceptance
 
-      - name: Pack Secret Migrations
-        run: npx nx run supabase-secret:pack-migrations
-
-      - name: Upload Migration Artifacts
+      - name: Upload Acceptance Report
         uses: actions/upload-artifact@v4
         with:
-          name: migration-bundles
+          name: acceptance-report
+          path: dist/reports/acceptance-report.md
+          if-no-files-found: error
+
+      - name: Upload Migration Bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-migration-bundles
           path: dist/migrations/**
           if-no-files-found: error

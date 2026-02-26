@@ -1,0 +1,37 @@
+{
+  "name": "workspace-policy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "tools/workspace-policy",
+  "sourceRoot": "tools/workspace-policy",
+  "projectType": "application",
+  "implicitDependencies": ["*"],
+  "tags": ["type:infra", "layer:shared", "data:biz", "scope:shared"],
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/validate-project-tags.mjs"
+      }
+    },
+    "module-boundary-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/verify-module-boundaries.mjs"
+      }
+    },
+    "acceptance": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/reports/acceptance-report.md"],
+      "options": {
+        "command": "node tools/scripts/workspace-acceptance.mjs"
+      }
+    },
+    "release-audit": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/reports/release-audit-report.md"],
+      "options": {
+        "command": "node tools/scripts/release-audit.mjs"
+      }
+    }
+  }
+}

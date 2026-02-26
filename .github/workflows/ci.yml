@@ -15,6 +15,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set SHAs for Nx Affected
+        uses: nrwl/nx-set-shas@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -27,18 +30,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Workspace Policy Lint Gate
+        run: npx nx run workspace-policy:lint
+
+      - name: Workspace Module Boundary Gate
+        run: npx nx run workspace-policy:module-boundary-check
+
       - name: Affected Lint Test Build
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="origin/${{ github.base_ref }}"
-          else
-            BASE="HEAD~1"
-          fi
-          npx nx affected -t lint test build --base="$BASE" --head=HEAD
+        run: npx nx affected -t lint test build --base=$NX_BASE --head=$NX_HEAD
 
       - name: Affected E2E On Main
         if: github.ref == 'refs/heads/main'
-        run: npx nx affected -t e2e --base=HEAD~1 --head=HEAD
+        run: npx nx affected -t e2e --base=$NX_BASE --head=$NX_HEAD
 
       - name: Fix CI
         if: always()

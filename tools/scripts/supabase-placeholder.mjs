@@ -5,7 +5,7 @@ const [projectName, action] = process.argv.slice(2);
 
 if (!projectName || !action) {
   console.error(
-    'Usage: node tools/scripts/supabase-placeholder.mjs <supabase-biz|supabase-secret> <action>'
+    'Usage: node tools/scripts/supabase-placeholder.mjs <supabase-biz|supabase-secret> <action>',
   );
   process.exit(1);
 }
@@ -22,7 +22,7 @@ const contractsOut =
         'db-types-biz',
         'src',
         'lib',
-        'generated.ts'
+        'generated.ts',
       )
     : path.join(
         workspaceRoot,
@@ -31,7 +31,7 @@ const contractsOut =
         'db-types-secret',
         'src',
         'lib',
-        'generated.ts'
+        'generated.ts',
       );
 
 switch (action) {
@@ -40,7 +40,7 @@ switch (action) {
   case 'status':
   case 'migrate-prod': {
     console.log(
-      `[${projectName}] ${action} placeholder. Run Supabase CLI in internal environment as needed.`
+      `[${projectName}] ${action} placeholder. Run Supabase CLI in internal environment as needed.`,
     );
     break;
   }

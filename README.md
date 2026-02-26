@@ -19,15 +19,36 @@ npx nx run supabase-biz:pack-migrations
 npx nx run supabase-secret:pack-migrations
 ```
 
+## Local toolchain
+
+- Recommended Node.js: `22.x` (CI uses Node 22).
+- Use `.nvmrc`:
+
+```bash
+nvm use
+```
+
 ## Security model
 
 - `data-access-supabase-secret` is restricted to `secret-service`.
 - `web` and `admin` cannot depend on `data:secret` libraries.
 - Module-boundary checks are enforced through `@nx/enforce-module-boundaries`.
 
+## Lint configuration
+
+- ESLint uses flat config only: `eslint.config.mjs`.
+
+## Strict release sign-off
+
+Run in this exact order on a clean worktree:
+
+1. Ensure clean workspace: `git status --porcelain` must be empty
+2. `npx nx format:write --all`
+3. `npm ci`
+4. `npx nx run workspace-policy:release-audit`
 ## CI workflows
 
-- `ci.yml`: affected lint/test/build + main-branch e2e + `nx-cloud start-ci-run` + `nx fix-ci` (always)
+- `ci.yml`: `nx-set-shas` + affected lint/test/build + main-branch e2e + `nx-cloud start-ci-run` + `nx fix-ci` (always)
 - `index.yml`: `ai-indexer:sync` + index diff gate + `ai-indexer:validate`
 - `migrations.yml`: package migration bundles only (no production DB migration)
 - `release.yml`: manual Nx release workflow
