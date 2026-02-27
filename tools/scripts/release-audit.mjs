@@ -174,8 +174,8 @@ async function runNpmAuditStep() {
   }
 
   const result = runCommand(
-    getNpmCommand(),
-    ['audit', '--omit=dev', '--audit-level=high'],
+    process.execPath,
+    getNpmCliArgs(['audit', '--omit=dev', '--audit-level=high']),
     command,
   );
   recordStep('NPM Audit', command, result);
@@ -302,10 +302,22 @@ function getTrackedFiles() {
   return (result.stdout || '').split('\0').filter(Boolean);
 }
 
-function getNpmCommand() {
-  return process.platform === 'win32'
-    ? path.join(path.dirname(process.execPath), 'npm.cmd')
-    : path.join(path.dirname(process.execPath), 'npm');
+function getNpmCliArgs(args) {
+  const npmCliPath = path.join(
+    path.dirname(process.execPath),
+    'node_modules',
+    'npm',
+    'bin',
+    'npm-cli.js',
+  );
+
+  if (!pathExistsSync(npmCliPath)) {
+    throw new Error(
+      `npm CLI not found at expected path: ${npmCliPath}. Ensure Node 22.x with npm is installed.`,
+    );
+  }
+
+  return [npmCliPath, ...args];
 }
 
 function runCommand(command, args, display) {
