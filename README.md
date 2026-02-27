@@ -52,7 +52,10 @@ Run in this exact order on a clean worktree:
    `git commit -m "chore(index): refresh deterministic agent index"`
 7. `npx nx run workspace-policy:release-audit`
 
-Gate note: required index gate files are `docs/agent-index/manifest.jsonl` and `docs/agent-index/chunks.jsonl`. `docs/agent-index/meta.json` and `**/next-env.d.ts` are informational/generated and excluded from cleanliness diff checks.
+### Generated artifact policy
+
+- Required gate files: `docs/agent-index/manifest.jsonl` and `docs/agent-index/chunks.jsonl` (commit when changed).
+- Informational/generated files: `docs/agent-index/meta.json` and `**/next-env.d.ts` (excluded from cleanliness gates; restore instead of committing for release sign-off).
 
 ## CI workflows
 
