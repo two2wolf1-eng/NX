@@ -623,7 +623,8 @@ async function writeReport() {
     '5. Verify index content: `git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl`.',
     '6. If step 5 fails, commit index content: `git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl && git commit -m "chore(index): refresh deterministic agent index"`.',
     '7. Run strict release audit: `npx nx run workspace-policy:release-audit`.',
-    '8. Optional: keep meta clean without commit: `git restore --source=HEAD -- docs/agent-index/meta.json`.',
+    '8. Generated artifact policy: manifest/chunks are required gate files; meta.json and next-env.d.ts are informational/generated.',
+    "9. Optional cleanup for informational/generated files: `git restore --source=HEAD -- docs/agent-index/meta.json ':(glob)**/next-env.d.ts'`.",
   ];
 
   if (failed) {
