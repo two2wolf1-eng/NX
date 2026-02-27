@@ -25,7 +25,7 @@
 {"path":"apps/admin/eslint.config.mjs","size":334,"sha256":"d86b4261289ee9bf485269b41b612abd4763651d66f1302baa5eaa720841e770","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"apps/admin/index.d.ts","size":167,"sha256":"415c9f8b3e499f42a77345f9393737ba658908ba13cc527cd0e6db2dde4811a9","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/admin/jest.config.cts","size":442,"sha256":"6764343dac87fa8301b4cc01482c63b7fef23c4469750f1aba4850641da14d74","kind":"text","ext":"cts","language":"typescript"}
-{"path":"apps/admin/next-env.d.ts","size":247,"sha256":"507f46976e27ea54d5fc6845f1c6f48bb9a7793dff9324aeb79bac38af3c5741","kind":"text","ext":"ts","language":"typescript"}
+{"path":"apps/admin/next-env.d.ts","size":247,"sha256":"7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/admin/next.config.js","size":477,"sha256":"1a292896aa2a0de94f64a77dbf6da7db02c0a6f376a52c1d83b14ddad2dff54b","kind":"text","ext":"js","language":"javascript"}
 {"path":"apps/admin/package.json","size":166,"sha256":"6cff171cd365482d662eab3bff5b0e0cb17c2d168c0bfa015839c239bd9b253b","kind":"text","ext":"json","language":"json"}
 {"path":"apps/admin/project.json","size":315,"sha256":"ed860a1c5c80e97b4e13e0b7ac121e2790c1fe000d839a0cbea88f789317876f","kind":"text","ext":"json","language":"json"}
@@ -57,7 +57,7 @@
 {"path":"apps/marketing/eslint.config.mjs","size":334,"sha256":"d86b4261289ee9bf485269b41b612abd4763651d66f1302baa5eaa720841e770","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"apps/marketing/index.d.ts","size":167,"sha256":"415c9f8b3e499f42a77345f9393737ba658908ba13cc527cd0e6db2dde4811a9","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/marketing/jest.config.cts","size":450,"sha256":"9da2bf5e65015335e1cb4f8d899aa221cb26022718f94d950eee38eb70c7f679","kind":"text","ext":"cts","language":"typescript"}
-{"path":"apps/marketing/next-env.d.ts","size":247,"sha256":"507f46976e27ea54d5fc6845f1c6f48bb9a7793dff9324aeb79bac38af3c5741","kind":"text","ext":"ts","language":"typescript"}
+{"path":"apps/marketing/next-env.d.ts","size":247,"sha256":"7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/marketing/next.config.js","size":477,"sha256":"1a292896aa2a0de94f64a77dbf6da7db02c0a6f376a52c1d83b14ddad2dff54b","kind":"text","ext":"js","language":"javascript"}
 {"path":"apps/marketing/package.json","size":170,"sha256":"f9ac9d9418d7cb1caa671ba36c28cd3a352683d7b59997ec74425df9a8c2fa0d","kind":"text","ext":"json","language":"json"}
 {"path":"apps/marketing/project.json","size":334,"sha256":"c1514f641f3282fdbd29fe9c0dc27afcec29ab145e5f97d2d4f316b29dfa34f7","kind":"text","ext":"json","language":"json"}
@@ -95,7 +95,7 @@
 {"path":"apps/web/eslint.config.mjs","size":334,"sha256":"d86b4261289ee9bf485269b41b612abd4763651d66f1302baa5eaa720841e770","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"apps/web/index.d.ts","size":167,"sha256":"415c9f8b3e499f42a77345f9393737ba658908ba13cc527cd0e6db2dde4811a9","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/web/jest.config.cts","size":438,"sha256":"30885f3e5b55743f4fc671cc095943ae7226eaedda9334aa14ce9540cb51cbbf","kind":"text","ext":"cts","language":"typescript"}
-{"path":"apps/web/next-env.d.ts","size":247,"sha256":"507f46976e27ea54d5fc6845f1c6f48bb9a7793dff9324aeb79bac38af3c5741","kind":"text","ext":"ts","language":"typescript"}
+{"path":"apps/web/next-env.d.ts","size":247,"sha256":"7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/web/next.config.js","size":477,"sha256":"1a292896aa2a0de94f64a77dbf6da7db02c0a6f376a52c1d83b14ddad2dff54b","kind":"text","ext":"js","language":"javascript"}
 {"path":"apps/web/package.json","size":164,"sha256":"2500dab4f75717e5d3e58304770c48140863125f3645198017e99479805f1380","kind":"text","ext":"json","language":"json"}
 {"path":"apps/web/project.json","size":307,"sha256":"32dee0dc7b4c6c8a7214a3a53a3430b9922a7e1639e4da483af1b3e0f252f549","kind":"text","ext":"json","language":"json"}
