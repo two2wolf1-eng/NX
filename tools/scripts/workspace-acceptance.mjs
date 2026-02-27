@@ -54,7 +54,7 @@ async function main() {
     ]);
     await runOptionalNxStep(
       'Run All Lint Test Build',
-      ['run-many', '-t', 'lint', 'test', 'build', '--all'],
+      ['run-many', '--targets=lint,test,build', '--all'],
       skipBuildAll,
       'ACCEPTANCE_SKIP_BUILD_ALL=true',
     );
