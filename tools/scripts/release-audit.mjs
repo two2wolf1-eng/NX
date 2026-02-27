@@ -561,7 +561,11 @@ async function writeReport() {
     '1. Ensure clean workspace: `git status --porcelain` must be empty.',
     '2. Normalize formatting: `npx nx format:write --all --libs-and-apps`.',
     '3. Install dependencies: `npm ci`.',
-    '4. Run strict release audit: `npx nx run workspace-policy:release-audit`.',
+    '4. Refresh index: `npx nx run ai-indexer:sync`.',
+    '5. Verify index content: `git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl`.',
+    '6. If step 5 fails, commit index content: `git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl && git commit -m "chore(index): refresh deterministic agent index"`.',
+    '7. Run strict release audit: `npx nx run workspace-policy:release-audit`.',
+    '8. Optional: keep meta clean without commit: `git restore --source=HEAD -- docs/agent-index/meta.json`.',
   ];
 
   if (failed) {

@@ -45,9 +45,14 @@ Run in this exact order on a clean worktree:
 1. Ensure clean workspace: `git status --porcelain` must be empty
 2. `npx nx format:write --all --libs-and-apps`
 3. `npm ci`
-4. `npx nx run workspace-policy:release-audit`
+4. `npx nx run ai-indexer:sync`
+5. `git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl`
+6. If step 5 reports diff, commit index content with fixed message:
+   `git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl`
+   `git commit -m "chore(index): refresh deterministic agent index"`
+7. `npx nx run workspace-policy:release-audit`
 
-Gate note: `docs/agent-index/meta.json` and `**/next-env.d.ts` are informational/generated and excluded from cleanliness diff checks.
+Gate note: required index gate files are `docs/agent-index/manifest.jsonl` and `docs/agent-index/chunks.jsonl`. `docs/agent-index/meta.json` and `**/next-env.d.ts` are informational/generated and excluded from cleanliness diff checks.
 
 ## CI workflows
 
