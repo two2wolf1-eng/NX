@@ -4,7 +4,7 @@
   "root": "apps/admin-e2e",
   "sourceRoot": "apps/admin-e2e/src",
   "projectType": "application",
-  "tags": ["type:app", "data:biz", "scope:admin"],
+  "tags": ["type:e2e", "product:admin", "platform:browser"],
   "targets": {
     "build": {
       "executor": "nx:noop"

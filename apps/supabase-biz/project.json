@@ -4,7 +4,7 @@
   "root": "apps/supabase-biz",
   "sourceRoot": "apps/supabase-biz/supabase",
   "projectType": "application",
-  "tags": ["type:infra", "layer:data-access", "data:biz", "scope:shared"],
+  "tags": ["type:app", "product:supabase-biz", "platform:node", "data:biz"],
   "targets": {
     "build": {
       "executor": "nx:noop"

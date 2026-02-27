@@ -3,7 +3,13 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/contracts/db-types-biz/src",
   "projectType": "library",
-  "tags": ["type:lib", "layer:contract", "data:biz", "scope:shared"],
+  "tags": [
+    "type:lib",
+    "scope:contracts",
+    "layer:contracts",
+    "platform:isomorphic",
+    "data:biz"
+  ],
   "// targets": "to see all targets run: nx show project @nx/db-types-biz --web",
   "targets": {}
 }
