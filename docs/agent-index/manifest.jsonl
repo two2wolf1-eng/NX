@@ -18,7 +18,7 @@
 {"path":".vscode/launch.json","size":1671,"sha256":"5e43f91170a0af869ccb9955148d063053e8ab1713cf489fc97cc592a143b6c8","kind":"text","ext":"json","language":"json"}
 {"path":"AGENTS.md","size":1512,"sha256":"45964d7171942305b5edb1354526b25179deb557856facfb7a6c5b839ebaee21","kind":"text","ext":"md","language":"markdown"}
 {"path":"apps/admin-e2e/package.json","size":67,"sha256":"853cad10897d158c00d3c6c17b211bf88eb72cdf6e62523ae4be9b0d805142c0","kind":"text","ext":"json","language":"json"}
-{"path":"apps/admin-e2e/playwright.config.ts","size":472,"sha256":"1a4757d7fb3744556a20d2a6ec922f04ce937abdca7575cede692626af753d7e","kind":"text","ext":"ts","language":"typescript"}
+{"path":"apps/admin-e2e/playwright.config.ts","size":498,"sha256":"0df2cda209cbe9eb18427d788186bb75dc121cb871c96c67af6da8614a2cbe07","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/admin-e2e/project.json","size":808,"sha256":"e2d9ed6151991e797ebb7360bc8aa252f1c50fa52c121487edfd91294c82ea03","kind":"text","ext":"json","language":"json"}
 {"path":"apps/admin-e2e/src/admin.spec.ts","size":173,"sha256":"580897833c90fbee0161d5e0df4ec339ff1ab6733ebe324b1b30e28b5c152b82","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/admin/.swcrc","size":553,"sha256":"8347fb7d930253e24617d3b239504d6219bc6557a90d52e3c8f00d00c7461bf7","kind":"text","ext":"","language":"unknown"}
@@ -88,7 +88,7 @@
 {"path":"apps/supabase-secret/project.json","size":1819,"sha256":"f9a0f2ec36bdc78f64025a0d705ac54b43b5cd37458e535fe93f039e160fe2bd","kind":"text","ext":"json","language":"json"}
 {"path":"apps/supabase-secret/supabase/.gitkeep","size":1,"sha256":"01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b","kind":"text","ext":"","language":"unknown"}
 {"path":"apps/web-e2e/package.json","size":65,"sha256":"402adbd3670fbbf5e0b340a1f6be4117c0a847ff7493247dd67c25007605327b","kind":"text","ext":"json","language":"json"}
-{"path":"apps/web-e2e/playwright.config.ts","size":470,"sha256":"635e16790d526c7b29ba238185967b21820e00193b7d15dc7e1e0650a15c2288","kind":"text","ext":"ts","language":"typescript"}
+{"path":"apps/web-e2e/playwright.config.ts","size":496,"sha256":"21a063686a3fa7f478871ad3a70a77c7d53de070261ff1e4b8255b90a31195a0","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/web-e2e/project.json","size":796,"sha256":"cd9d8fbd913622734f99061c6cb84d4ecd69451559808f1c5476066ffb5ac7cc","kind":"text","ext":"json","language":"json"}
 {"path":"apps/web-e2e/src/web.spec.ts","size":169,"sha256":"a646d31ef520a57a2d28e9a8ca870ab6a5b21b5e366196bd7990c9b96e1fc5b6","kind":"text","ext":"ts","language":"typescript"}
 {"path":"apps/web/.swcrc","size":553,"sha256":"8347fb7d930253e24617d3b239504d6219bc6557a90d52e3c8f00d00c7461bf7","kind":"text","ext":"","language":"unknown"}
