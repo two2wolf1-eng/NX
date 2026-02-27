@@ -303,7 +303,9 @@ function getTrackedFiles() {
 }
 
 function getNpmCommand() {
-  return process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  return process.platform === 'win32'
+    ? path.join(path.dirname(process.execPath), 'npm.cmd')
+    : path.join(path.dirname(process.execPath), 'npm');
 }
 
 function runCommand(command, args, display) {
