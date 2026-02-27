@@ -574,11 +574,11 @@
 {"path":"tools/scripts/acceptance-run.mjs","start_line":1,"end_line":103,"chunk_hash":"3393bc134d703f52fb929b0b03bd3b648fd906a4cdef4c1b002c2d4e946094ef"}
 {"path":"tools/scripts/pack-migrations.mjs","start_line":1,"end_line":89,"chunk_hash":"cd7b802e31e4b93087254890427ef4941810b9dfadc64588a5902710c05ab29f"}
 {"path":"tools/scripts/release-audit.mjs","start_line":1,"end_line":120,"chunk_hash":"d59d58e346c5d52fce7dfca77814decf15ab2c71e6605ebb69de667324eb50b0"}
-{"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"757a2413bf4d1a7685a0abc49fe49f2172146ebd85881ec20f9ce2578f8f6312"}
-{"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"2fb652b240127074ec0509d7eba8251e9b8f5c71d29371e275806d8bd927e33d"}
-{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"72bbc61e0739b81601168a567ef55e18863e37a8159d965078bfe2040ba8e85c"}
-{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":600,"chunk_hash":"c7f075e418c0ae7ba372e9c713c34546c3dd920a6b0d946fd8b74b00889d6601"}
-{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":615,"chunk_hash":"38c0dc8a4ac91c169b34e927e56a190a7f1ac014b1ce5dad994d9d244c9189c3"}
+{"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"4cdc23341158e5cf034da238e59810e4a357d5008eec65196cd86605bcf52606"}
+{"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"9a221f194121a030961b38618bfd156acf2bee208bb380ec0028600189e84eec"}
+{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"8336648dcd0e0fdf268da489ed6f447d6774ac89765aafca54e540e37427c5ae"}
+{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":600,"chunk_hash":"f7e133db8c0c7fb93305c1ea0af4e0205e8e3dceb671f6c63df14f74ccf5e4ec"}
+{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":642,"chunk_hash":"0ef41ceda1ff9a4f089c1da6ab07da1333b4b4bd7f61902317031c41f0e6e758"}
 {"path":"tools/scripts/supabase-placeholder.mjs","start_line":1,"end_line":88,"chunk_hash":"eb2f289c62017eab7e43dbc4f9b7d7b71616e6034b03c833da44b8ff8143735b"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":1,"end_line":120,"chunk_hash":"56f62e6233784e1ee2b9fae97a6c0e970f8e19a20ca61d5fe6c3e53f1933e111"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":121,"end_line":158,"chunk_hash":"47797ea563869f1c15d94a143bbc7c7f22f6ef66ec6550d73f23ccdd765e1c2f"}

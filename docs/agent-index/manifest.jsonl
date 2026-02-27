@@ -295,7 +295,7 @@
 {"path":"tools/fixtures/module-boundaries/web-forbidden-import.ts","size":125,"sha256":"6591c6a74977559663dc9097321a8596df8ac33865925f8a8ef49fafaea64896","kind":"text","ext":"ts","language":"typescript"}
 {"path":"tools/scripts/acceptance-run.mjs","size":2908,"sha256":"e61bc8595cb4a0bb03919c0287b7843a5eb174a0fe2f96e3e0cacb974160b1e2","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/pack-migrations.mjs","size":2533,"sha256":"c4a78b58596339aa813a0d5047e074e1bbe9ff59b8d499cae27f33687c22b407","kind":"text","ext":"mjs","language":"javascript"}
-{"path":"tools/scripts/release-audit.mjs","size":17372,"sha256":"212048ac9eae9891bbcbc8154d5a38c38e5eaf29d8709f8f34d2ddeb85614847","kind":"text","ext":"mjs","language":"javascript"}
+{"path":"tools/scripts/release-audit.mjs","size":18456,"sha256":"f824c7b16cdbc5ca2ff5117822b30819fb012570d0249b7770851bf7f3e12baf","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/supabase-placeholder.mjs","size":2301,"sha256":"aced44be633b360cb82910caaffdc2f654f84ee4e1efd2a804122e7a321f0949","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/validate-project-tags.mjs","size":4168,"sha256":"c170c329df8d19190c986f33761176e4f4030211c1b63589cd64100166c48aaf","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/verify-module-boundaries.mjs","size":4703,"sha256":"806e1eada5364af32b009aecdb306b05252a36e02c338d82ba296d7eb27250f5","kind":"text","ext":"mjs","language":"javascript"}
