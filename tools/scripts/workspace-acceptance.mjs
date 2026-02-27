@@ -180,10 +180,11 @@ async function runWorkspaceCleanlinessStep() {
     'git',
     ['status', '--porcelain', '--', '.', ...repositoryExcludes],
     {
-    cwd: workspaceRoot,
-    encoding: 'utf8',
-    stdio: 'pipe',
-  });
+      cwd: workspaceRoot,
+      encoding: 'utf8',
+      stdio: 'pipe',
+    },
+  );
   const porcelain = (statusResult.stdout ?? '').trim();
   const isDirty = porcelain.length > 0;
   const result = {
@@ -213,7 +214,11 @@ async function runGitDiffStep() {
     'docs/agent-index/chunks.jsonl',
   ];
   const display = `git diff --exit-code ${indexContentFiles.join(' ')}`;
-  const diff = runCommand('git', ['diff', '--exit-code', ...indexContentFiles], display);
+  const diff = runCommand(
+    'git',
+    ['diff', '--exit-code', ...indexContentFiles],
+    display,
+  );
   recordStep(name, display, diff);
   if (diff.status === 0) {
     return;
@@ -252,7 +257,8 @@ async function runRepositoryConsistencyStep() {
     return;
   }
 
-  const statusDisplay = 'git status --porcelain -- . ' + repositoryExcludes.join(' ');
+  const statusDisplay =
+    'git status --porcelain -- . ' + repositoryExcludes.join(' ');
   const status = runCommand(
     'git',
     ['status', '--porcelain', '--', '.', ...repositoryExcludes],

@@ -48,6 +48,7 @@ Run in this exact order on a clean worktree:
 4. `npx nx run workspace-policy:release-audit`
 
 Gate note: `docs/agent-index/meta.json` and `**/next-env.d.ts` are informational/generated and excluded from cleanliness diff checks.
+
 ## CI workflows
 
 - `ci.yml`: `nx-set-shas` + affected lint/test/build + main-branch e2e + `nx-cloud start-ci-run` + `nx fix-ci` (always)

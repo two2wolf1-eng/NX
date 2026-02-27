@@ -199,7 +199,8 @@ async function runRepositoryConsistencyStep() {
     return;
   }
 
-  const statusCommand = 'git status --porcelain -- . ' + repositoryExcludes.join(' ');
+  const statusCommand =
+    'git status --porcelain -- . ' + repositoryExcludes.join(' ');
   const status = runCommand(
     'git',
     ['status', '--porcelain', '--', '.', ...repositoryExcludes],
