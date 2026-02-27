@@ -8,12 +8,12 @@
 {"path":".codex/config.toml","start_line":1,"end_line":10,"chunk_hash":"0725d8624e9568ef0547a398f18f241597621b219bcf755e4f679e6f1b533044"}
 {"path":".editorconfig","start_line":1,"end_line":13,"chunk_hash":"0f0255123c787dfa1915a547f1ca9432fc24bfdd2a93bc9fbf820b7e888d8580"}
 {"path":".gitattributes","start_line":1,"end_line":2,"chunk_hash":"960d3309918f3271df41da5fd91cd1b1a4b0ae8724de30ff9ab46cb2012ead99"}
-{"path":".github/workflows/acceptance.yml","start_line":1,"end_line":44,"chunk_hash":"9651e5c2c7545de15f94f917fa7527039cb10c3246153980c70725dd13151d02"}
-{"path":".github/workflows/ci.yml","start_line":1,"end_line":48,"chunk_hash":"32df1cad299fd12f4a4858387a34fa0f66908b9a40ec64248ff3a63e4fb9009a"}
-{"path":".github/workflows/dependency-review.yml","start_line":1,"end_line":19,"chunk_hash":"8aa190c68b6aa9cdd855820402bd9ea8c91c7fdac3971aaeaa503e675f91e668"}
+{"path":".github/workflows/acceptance.yml","start_line":1,"end_line":45,"chunk_hash":"68f4bbebfcd80e09f2b024cbc9a63528932f76345612289fe5900aecc6d0f18d"}
+{"path":".github/workflows/ci.yml","start_line":1,"end_line":51,"chunk_hash":"5175efc523dd870739ed41cd8bc38a1b49bd278f5ca01463b98fd5d587c17af2"}
+{"path":".github/workflows/dependency-review.yml","start_line":1,"end_line":43,"chunk_hash":"812ec1f96133d6d311c6d8f8f441baac59ead56afb52925f2bdbdf194b77c3fa"}
 {"path":".github/workflows/index.yml","start_line":1,"end_line":37,"chunk_hash":"ae4ca58c01e0a9b085c947ddd3c9a22c2ceb5ebb3f654bad01a28287c1081d90"}
 {"path":".github/workflows/migrations.yml","start_line":1,"end_line":41,"chunk_hash":"607abfb4ab64d76fe0a770523621de60585b5ec4caf2a77e817bdd287705d3cc"}
-{"path":".github/workflows/release-audit.yml","start_line":1,"end_line":49,"chunk_hash":"889ce0a18682725d015e2bbf35b5410134fc17c8ce30d09fc41f007fae4d4658"}
+{"path":".github/workflows/release-audit.yml","start_line":1,"end_line":50,"chunk_hash":"e2293da64ba6129c85452204d2dcf7a80f610216ccc13bf4a389d0a3fdd74110"}
 {"path":".github/workflows/release.yml","start_line":1,"end_line":25,"chunk_hash":"ba96ce30627dbb9c67f3fff4e646f6283b63400f734e488b54cc7bc20990ecf1"}
 {"path":".gitignore","start_line":1,"end_line":51,"chunk_hash":"2462b8a9bac787d73b2d9a9969c32a29bfe32659a1b339776847e6a5e625fe8c"}
 {"path":".nvmrc","start_line":1,"end_line":1,"chunk_hash":"785f3ec7eb32f30b90cd0fcf3657d388b5ff4297f2f9716ff66e9b69c05ddd09"}
