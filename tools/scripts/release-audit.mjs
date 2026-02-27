@@ -256,7 +256,7 @@ function collectSecretHits(relativePath, content, hits) {
     { rule: 'private key marker', regex: /BEGIN (RSA|EC|OPENSSH) PRIVATE KEY/ },
     {
       rule: 'supabase service role key marker',
-      regex: /SUPABASE_SERVICE_ROLE_KEY/,
+      regex: /\bSUPABASE_SERVICE_ROLE_KEY\b\s*[:=]\s*["'']?[A-Za-z0-9._-]{20,}/,
     },
     {
       rule: 'jwt-like token',
