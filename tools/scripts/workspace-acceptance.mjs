@@ -99,13 +99,7 @@ async function main() {
 }
 
 async function runPreflightStep() {
-  runRequiredCommandCheck(
-    'Preflight Node Command',
-    'node -v',
-    'node',
-    ['-v'],
-    'Preflight failed: missing command `node`. Add the Node 22 installation directory to PATH and retry.',
-  );
+  runNodeVersionPreflight();
   runRequiredCommandCheck(
     'Preflight Git Command',
     'git --version',
@@ -114,6 +108,38 @@ async function runPreflightStep() {
     'Preflight failed: missing command `git`. Add Git to PATH and retry.',
   );
   runGitRootPreflight('Preflight Git Root', 'git rev-parse --show-toplevel');
+}
+
+function runNodeVersionPreflight() {
+  const display = 'node -p "process.versions.node"';
+  const raw = spawnSync('node', ['-p', 'process.versions.node'], {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const result = normalizePreflightResult(raw);
+
+  if (result.status !== 0) {
+    recordStep('Preflight Node Version', display, result);
+    throw new Error(
+      'Preflight failed: missing command `node`. Please switch to Node 22 (nvm use 22 / or put the Node 22 installation directory first in PATH).',
+    );
+  }
+
+  const detectedVersion = result.stdout.trim();
+  const major = Number.parseInt(detectedVersion.split('.')[0] ?? '', 10);
+  if (!Number.isInteger(major) || major !== 22) {
+    recordStep('Preflight Node Version', display, {
+      status: 1,
+      stdout: `got ${detectedVersion || 'unknown'}, expected 22.x`,
+      stderr: '',
+    });
+    throw new Error(
+      `Preflight failed: Node version mismatch (got ${detectedVersion || 'unknown'}, expected 22.x). Please switch to Node 22 (nvm use 22 / or put the Node 22 installation directory first in PATH).`,
+    );
+  }
+
+  recordStep('Preflight Node Version', display, result);
 }
 
 function runRequiredCommandCheck(name, display, command, args, errorMessage) {
