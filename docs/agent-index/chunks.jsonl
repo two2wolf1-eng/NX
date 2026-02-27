@@ -23,7 +23,7 @@
 {"path":".vscode/launch.json","start_line":1,"end_line":59,"chunk_hash":"34bcc0eb7e5b45a02a2eb010ccef19ffb36ce3f040721a29da7c98c3ebad53c4"}
 {"path":"AGENTS.md","start_line":1,"end_line":23,"chunk_hash":"43c3d6339bcfb7d70081e7448ea19c99792d96123aa0e2e2059836b7d8a2bfc4"}
 {"path":"apps/admin-e2e/package.json","start_line":1,"end_line":5,"chunk_hash":"a64eaadd4e77abd4845f8f4aa62adf3949064e6b2f6febd07f6cbdb87f300a42"}
-{"path":"apps/admin-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"2f4936b9f130fda8f29bb1392ddf791f2c1f347a0582c9d4e0d84b74ec3ed9b2"}
+{"path":"apps/admin-e2e/playwright.config.ts","start_line":1,"end_line":21,"chunk_hash":"d26cc5860289111b8299b34ed693241e7ba939d78451e59a3fab5a408cff2ea3"}
 {"path":"apps/admin-e2e/project.json","start_line":1,"end_line":34,"chunk_hash":"6112bde4bedb7c432cea458a788f78a1f9b28c6c7d01de370109fa0602ebc2af"}
 {"path":"apps/admin-e2e/src/admin.spec.ts","start_line":1,"end_line":6,"chunk_hash":"0ad9c34afb7d3fb17e758903b05fa10ff1ed13c566c8c59407205d9864bb6645"}
 {"path":"apps/admin/.swcrc","start_line":1,"end_line":30,"chunk_hash":"982b289a0a9ff93f4ede96d030758fda86bf09b95e280d9986e7d9e026f96d5c"}
@@ -109,7 +109,7 @@
 {"path":"apps/supabase-secret/project.json","start_line":1,"end_line":67,"chunk_hash":"c0771b1e4c4eccd9914854b128a9d9f5b0f814bd5a008347a6a69bbf162d8fe8"}
 {"path":"apps/supabase-secret/supabase/.gitkeep","start_line":1,"end_line":1,"chunk_hash":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
 {"path":"apps/web-e2e/package.json","start_line":1,"end_line":5,"chunk_hash":"c0cf9b5e5369f7d4390d1a3b492b4689ac9b784783803115e840cee1b55c1457"}
-{"path":"apps/web-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"e5c049ab51017017df1e4d41512966756a729e52354116213ad29f2177bbd0c6"}
+{"path":"apps/web-e2e/playwright.config.ts","start_line":1,"end_line":21,"chunk_hash":"e5245d4b9bdb8d18f831d5ad21d9bea42c95caec140dcd57856aa096e73b7188"}
 {"path":"apps/web-e2e/project.json","start_line":1,"end_line":34,"chunk_hash":"64f6607b9e32836c5540ef003bb81e0472d76cb8bd8f281db0b0ecb766506fbc"}
 {"path":"apps/web-e2e/src/web.spec.ts","start_line":1,"end_line":6,"chunk_hash":"4de7086e66d7c5f025941c3038a6601f160d3453bbda4c0f1ad2b9ac051f74d7"}
 {"path":"apps/web/.swcrc","start_line":1,"end_line":30,"chunk_hash":"982b289a0a9ff93f4ede96d030758fda86bf09b95e280d9986e7d9e026f96d5c"}
@@ -570,7 +570,7 @@
 {"path":"package-lock.json","start_line":30120,"end_line":30239,"chunk_hash":"ffdbce9fec9b9b1a613be8889b1421fa2c77dec39a09bdd5a09f4dbe46e943d9"}
 {"path":"package-lock.json","start_line":30240,"end_line":30240,"chunk_hash":"d10b36aa74a59bcf4a88185837f658afaf3646eff2bb16c3928d0e9335e945d2"}
 {"path":"package.json","start_line":1,"end_line":80,"chunk_hash":"79b83e640e0c8fe33657a77009cbc1e8801ff82a2ffaf6615480f6d5e39ceb10"}
-{"path":"README.md","start_line":1,"end_line":62,"chunk_hash":"4eaa9e77a715c426345921bf7a59b3ee51d84364928d8c0d23c4b55f3bb26f19"}
+{"path":"README.md","start_line":1,"end_line":65,"chunk_hash":"b937f71a37256bb9d255fb19fd397441fe714ca9d098730c5747cf93e67405b3"}
 {"path":"tools/fixtures/module-boundaries/contract-forbidden-import.ts","start_line":1,"end_line":6,"chunk_hash":"1ee2d33e48a65e325a9a69868d6231103e018829a69abb46c884ead0e63f91a5"}
 {"path":"tools/fixtures/module-boundaries/domain-forbidden-import.ts","start_line":1,"end_line":5,"chunk_hash":"77ca4d4bc656658a8b2310792a1587c660ba0a062fc776813e9c47019d811a62"}
 {"path":"tools/fixtures/module-boundaries/secret-service-allowed-import.ts","start_line":1,"end_line":5,"chunk_hash":"872243e00877aadb25d6df9baef4ae5fd730b01ca8c8198def0334053aa88947"}
@@ -582,7 +582,7 @@
 {"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"f3681fcc6dc555691d5b1ca196a8b692fc2b8b1a597c6a4c8bb030098cea272f"}
 {"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"4ee72098e654b2bfb6300c91f9cce1880cd90f3e858239d71d4aefe6515e5f89"}
 {"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":600,"chunk_hash":"d4fe299c04eeea475cf66608d327a5913edc6bd95a548201b58b6f249f9cc7fc"}
-{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":673,"chunk_hash":"2bbcc8830f2049b5f0c6b5b0c9acb516adc8fbe2a4f1faea98d4783d6b07f67b"}
+{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":674,"chunk_hash":"9d7b4f56ebbe1db7f0038170d6f99a03fe786ed675ea77bbb86794f53bd743c7"}
 {"path":"tools/scripts/supabase-placeholder.mjs","start_line":1,"end_line":88,"chunk_hash":"eb2f289c62017eab7e43dbc4f9b7d7b71616e6034b03c833da44b8ff8143735b"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":1,"end_line":120,"chunk_hash":"08f0bcb6537cbc18e90ee5c4ce0a4fb46bc2f01a13bcb55a49fbd89258df7d86"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":121,"end_line":240,"chunk_hash":"471832051ea80094547e2a4535e7ee2e34a545dde32953b1a4b0a06b5de8fa53"}
