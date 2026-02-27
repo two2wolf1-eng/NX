@@ -1,4 +1,7 @@
+import * as path from 'node:path';
 import { defineConfig } from '@playwright/test';
+
+const workspaceRoot = path.resolve(__dirname, '../..');
 
 export default defineConfig({
   testDir: './src',
@@ -9,7 +12,8 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'node ../../node_modules/nx/bin/nx.js run web:dev --port=4300',
+    command: 'node ./node_modules/nx/bin/nx.js run web:dev --port=4300',
+    cwd: workspaceRoot,
     url: 'http://127.0.0.1:4300',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
