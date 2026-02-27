@@ -9,7 +9,7 @@
 {"path":".editorconfig","start_line":1,"end_line":13,"chunk_hash":"0f0255123c787dfa1915a547f1ca9432fc24bfdd2a93bc9fbf820b7e888d8580"}
 {"path":".gitattributes","start_line":1,"end_line":2,"chunk_hash":"960d3309918f3271df41da5fd91cd1b1a4b0ae8724de30ff9ab46cb2012ead99"}
 {"path":".github/workflows/acceptance.yml","start_line":1,"end_line":48,"chunk_hash":"fcfd1f21d9ed89ebb4ed2270c0983380a4b67809a3e75a5bb7717dff2baf3981"}
-{"path":".github/workflows/ci.yml","start_line":1,"end_line":51,"chunk_hash":"5175efc523dd870739ed41cd8bc38a1b49bd278f5ca01463b98fd5d587c17af2"}
+{"path":".github/workflows/ci.yml","start_line":1,"end_line":53,"chunk_hash":"86c44aff7fdb3755fc766525fd0892f1f2e053b428b636f89caf2e217635fe77"}
 {"path":".github/workflows/dependency-review.yml","start_line":1,"end_line":43,"chunk_hash":"812ec1f96133d6d311c6d8f8f441baac59ead56afb52925f2bdbdf194b77c3fa"}
 {"path":".github/workflows/index.yml","start_line":1,"end_line":37,"chunk_hash":"ae4ca58c01e0a9b085c947ddd3c9a22c2ceb5ebb3f654bad01a28287c1081d90"}
 {"path":".github/workflows/migrations.yml","start_line":1,"end_line":41,"chunk_hash":"607abfb4ab64d76fe0a770523621de60585b5ec4caf2a77e817bdd287705d3cc"}

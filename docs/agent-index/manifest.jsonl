@@ -4,7 +4,7 @@
 {"path":".editorconfig","size":245,"sha256":"3970ce473928bdf945236b8aa6c7cbf6b0022f5ce379b7b0ba8e7343d8fec451","kind":"text","ext":"","language":"unknown"}
 {"path":".gitattributes","size":73,"sha256":"20329b207813e58ab8392609de4cb9b611ec9d280cd3794180a1a6e8c1eac5a3","kind":"text","ext":"","language":"unknown"}
 {"path":".github/workflows/acceptance.yml","size":1080,"sha256":"7c4ae383a2576aa7d7c9487d6fe28828017a6bc2e120d544273e1dc46e3c8825","kind":"text","ext":"yml","language":"yaml"}
-{"path":".github/workflows/ci.yml","size":1218,"sha256":"bd4f6c95aa24cab2559a1530aa96269e393933231054701417a0ddb9f0180be3","kind":"text","ext":"yml","language":"yaml"}
+{"path":".github/workflows/ci.yml","size":1289,"sha256":"376ba53ca6aa94d739ab73187c5bf0f9138111b5e00f0a876f8cc2aff2294dc1","kind":"text","ext":"yml","language":"yaml"}
 {"path":".github/workflows/dependency-review.yml","size":1237,"sha256":"e5e613c083406bdc90ba7938788b2176a15978352ebded389a15c2a65774bc79","kind":"text","ext":"yml","language":"yaml"}
 {"path":".github/workflows/index.yml","size":714,"sha256":"66cdc7a559b2f39ada5846e6f57f448a16d95baa872ffae614bd30de3a946b97","kind":"text","ext":"yml","language":"yaml"}
 {"path":".github/workflows/migrations.yml","size":841,"sha256":"152bdc6dce495fe36576096af194829fc01349c3ce619d2fbf4a3150d05cd1e4","kind":"text","ext":"yml","language":"yaml"}
