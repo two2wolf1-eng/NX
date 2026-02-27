@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/ai-indexer/src",
   "projectType": "application",
-  "tags": ["type:app", "data:biz", "scope:shared"],
+  "tags": ["type:app", "product:ai-indexer", "platform:node", "data:public"],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",

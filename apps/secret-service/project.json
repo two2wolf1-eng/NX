@@ -3,7 +3,12 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/secret-service/src",
   "projectType": "application",
-  "tags": ["type:app", "data:secret", "scope:secret"],
+  "tags": [
+    "type:app",
+    "product:secret-service",
+    "platform:node",
+    "data:secret"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",

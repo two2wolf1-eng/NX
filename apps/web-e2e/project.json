@@ -4,7 +4,7 @@
   "root": "apps/web-e2e",
   "sourceRoot": "apps/web-e2e/src",
   "projectType": "application",
-  "tags": ["type:app", "data:biz", "scope:web"],
+  "tags": ["type:e2e", "product:web", "platform:browser"],
   "targets": {
     "build": {
       "executor": "nx:noop"

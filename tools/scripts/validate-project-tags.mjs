@@ -1,25 +1,51 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const required = {
-  type: new Set(['type:app', 'type:lib', 'type:infra']),
+const allowed = {
+  type: new Set(['type:app', 'type:lib', 'type:e2e', 'type:tooling']),
+  product: new Set([
+    'product:web',
+    'product:admin',
+    'product:marketing',
+    'product:worker',
+    'product:secret-service',
+    'product:ai-indexer',
+    'product:supabase-biz',
+    'product:supabase-secret',
+    'product:code-search',
+    'product:workspace',
+  ]),
+  scope: new Set([
+    'scope:biz',
+    'scope:secret',
+    'scope:contracts',
+    'scope:shared',
+    'scope:platform',
+    'scope:testing',
+    'scope:tooling',
+  ]),
   layer: new Set([
     'layer:ui',
-    'layer:data-access',
+    'layer:feature',
     'layer:domain',
-    'layer:contract',
+    'layer:data-access',
+    'layer:contracts',
     'layer:shared',
+    'layer:platform',
+    'layer:testing',
+    'layer:tooling',
   ]),
-  data: new Set(['data:biz', 'data:secret']),
-  scope: new Set([
-    'scope:web',
-    'scope:admin',
-    'scope:marketing',
-    'scope:worker',
-    'scope:secret',
-    'scope:shared',
+  platform: new Set([
+    'platform:browser',
+    'platform:node',
+    'platform:isomorphic',
   ]),
+  data: new Set(['data:public', 'data:biz', 'data:secret']),
 };
+
+const allowedTagSet = new Set(
+  Object.values(allowed).flatMap((set) => [...set]),
+);
 
 const projectFiles = await listProjectJsonFiles(process.cwd());
 const projectEntries = [];
@@ -47,11 +73,19 @@ if (projectEntries.length === 0) {
 const errors = [];
 for (const project of projectEntries) {
   const tags = project.tags;
-  const tagSet = new Set(tags);
-  const typeTags = tags.filter((tag) => required.type.has(tag));
-  const layerTags = tags.filter((tag) => required.layer.has(tag));
-  const dataTags = tags.filter((tag) => required.data.has(tag));
-  const scopeTags = tags.filter((tag) => required.scope.has(tag));
+  const typeTags = tags.filter((tag) => allowed.type.has(tag));
+  const productTags = tags.filter((tag) => allowed.product.has(tag));
+  const scopeTags = tags.filter((tag) => allowed.scope.has(tag));
+  const layerTags = tags.filter((tag) => allowed.layer.has(tag));
+  const platformTags = tags.filter((tag) => allowed.platform.has(tag));
+  const dataTags = tags.filter((tag) => allowed.data.has(tag));
+
+  const unknownTags = tags.filter((tag) => !allowedTagSet.has(tag));
+  if (unknownTags.length > 0) {
+    errors.push(
+      `${project.name} (${project.path}): contains unknown tags [${unknownTags.join(', ')}]`,
+    );
+  }
 
   if (typeTags.length !== 1) {
     errors.push(
@@ -60,14 +94,25 @@ for (const project of projectEntries) {
     continue;
   }
 
-  if (scopeTags.length !== 1) {
+  if (platformTags.length !== 1) {
     errors.push(
-      `${project.name} (${project.path}): expected exactly one scope:* tag, found [${scopeTags.join(', ')}]`,
+      `${project.name} (${project.path}): expected exactly one platform:* tag, found [${platformTags.join(', ')}]`,
     );
   }
 
   const projectType = typeTags[0];
+
   if (projectType === 'type:app') {
+    if (productTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): app projects must have exactly one product:* tag, found [${productTags.join(', ')}]`,
+      );
+    }
+    if (scopeTags.length > 0) {
+      errors.push(
+        `${project.name} (${project.path}): app projects must not use scope:* tags, found [${scopeTags.join(', ')}]`,
+      );
+    }
     if (layerTags.length > 0) {
       errors.push(
         `${project.name} (${project.path}): app projects must not use layer:* tags, found [${layerTags.join(', ')}]`,
@@ -78,23 +123,63 @@ for (const project of projectEntries) {
         `${project.name} (${project.path}): app projects must have exactly one data:* tag, found [${dataTags.join(', ')}]`,
       );
     }
-  } else {
-    if (layerTags.length !== 1) {
+  }
+
+  if (projectType === 'type:e2e') {
+    if (productTags.length !== 1) {
       errors.push(
-        `${project.name} (${project.path}): expected exactly one layer:* tag, found [${layerTags.join(', ')}]`,
+        `${project.name} (${project.path}): e2e projects must have exactly one product:* tag, found [${productTags.join(', ')}]`,
       );
     }
-    if (dataTags.length !== 1) {
+    if (scopeTags.length > 0 || layerTags.length > 0 || dataTags.length > 0) {
       errors.push(
-        `${project.name} (${project.path}): expected exactly one data:* tag, found [${dataTags.join(', ')}]`,
+        `${project.name} (${project.path}): e2e projects must not use scope/layer/data tags.`,
       );
     }
   }
 
-  if (tagSet.has('secret-access-lib')) {
-    if (!tagSet.has('layer:data-access') || !tagSet.has('data:secret')) {
+  if (projectType === 'type:lib') {
+    if (productTags.length > 0) {
       errors.push(
-        `${project.name} (${project.path}): secret-access-lib requires layer:data-access + data:secret`,
+        `${project.name} (${project.path}): lib projects must not use product:* tags, found [${productTags.join(', ')}]`,
+      );
+    }
+    if (scopeTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): lib projects must have exactly one scope:* tag, found [${scopeTags.join(', ')}]`,
+      );
+    }
+    if (layerTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): lib projects must have exactly one layer:* tag, found [${layerTags.join(', ')}]`,
+      );
+    }
+    if (dataTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): lib projects must have exactly one data:* tag, found [${dataTags.join(', ')}]`,
+      );
+    }
+  }
+
+  if (projectType === 'type:tooling') {
+    if (scopeTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): tooling projects must have exactly one scope:* tag, found [${scopeTags.join(', ')}]`,
+      );
+    }
+    if (layerTags.length !== 1) {
+      errors.push(
+        `${project.name} (${project.path}): tooling projects must have exactly one layer:* tag, found [${layerTags.join(', ')}]`,
+      );
+    }
+    if (productTags.length > 1) {
+      errors.push(
+        `${project.name} (${project.path}): tooling projects can have at most one product:* tag, found [${productTags.join(', ')}]`,
+      );
+    }
+    if (dataTags.length > 1) {
+      errors.push(
+        `${project.name} (${project.path}): tooling projects can have at most one data:* tag, found [${dataTags.join(', ')}]`,
       );
     }
   }

@@ -5,7 +5,14 @@
   "sourceRoot": "tools/workspace-policy",
   "projectType": "application",
   "implicitDependencies": ["*"],
-  "tags": ["type:infra", "layer:shared", "data:biz", "scope:shared"],
+  "tags": [
+    "type:tooling",
+    "scope:tooling",
+    "layer:tooling",
+    "platform:node",
+    "product:workspace",
+    "data:public"
+  ],
   "targets": {
     "lint": {
       "executor": "nx:run-commands",

@@ -4,7 +4,7 @@
   "root": "apps/code-search",
   "sourceRoot": "apps/code-search/opengrok",
   "projectType": "application",
-  "tags": ["type:infra", "layer:shared", "data:biz", "scope:shared"],
+  "tags": ["type:app", "product:code-search", "platform:node", "data:public"],
   "targets": {
     "build": {
       "executor": "nx:noop"

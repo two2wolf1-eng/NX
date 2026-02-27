@@ -3,7 +3,13 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/contracts/db-types-secret/src",
   "projectType": "library",
-  "tags": ["type:lib", "layer:contract", "data:secret", "scope:shared"],
+  "tags": [
+    "type:lib",
+    "scope:contracts",
+    "layer:contracts",
+    "platform:isomorphic",
+    "data:secret"
+  ],
   "// targets": "to see all targets run: nx show project @nx/db-types-secret --web",
   "targets": {}
 }
