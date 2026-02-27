@@ -1,13 +1,15 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { promises as fs } from 'node:fs';
+import { promises as fs, readFileSync } from 'node:fs';
 import * as path from 'node:path';
+
+type ManifestKind = 'text' | 'binary';
 
 type ManifestEntry = {
   path: string;
   size: number;
   sha256: string;
-  kind: 'text' | 'binary';
+  kind: ManifestKind;
   ext: string;
   language: string;
 };
@@ -17,17 +19,57 @@ type ChunkEntry = {
   start_line: number;
   end_line: number;
   chunk_hash: string;
-  content: string;
+  content?: string;
 };
 
-const INDEX_DIR = path.join('docs', 'agent-index');
-const MANIFEST_PATH = path.join(INDEX_DIR, 'manifest.jsonl');
-const CHUNKS_PATH = path.join(INDEX_DIR, 'chunks.jsonl');
-const META_PATH = path.join(INDEX_DIR, 'meta.json');
+type MetaEntry = {
+  git_sha: string;
+  generated_at: string;
+  nx_version: string;
+  node_version: string;
+  ruleset_version: string;
+  source: 'git ls-files';
+  include_content: boolean;
+  coverage_excludes: string[];
+  chunk_max_lines: number;
+  chunk_max_chars: number;
+  chunk_sensitive_excludes: readonly string[];
+};
+
+type TrackedFileEntry = {
+  path: string;
+  blobId: string;
+};
+
+const INDEX_DIR = 'docs/agent-index';
+const INDEX_PREFIX = `${INDEX_DIR}/`;
+const INDEX_DIR_FS = path.join('docs', 'agent-index');
+const MANIFEST_PATH = path.join(INDEX_DIR_FS, 'manifest.jsonl');
+const CHUNKS_PATH = path.join(INDEX_DIR_FS, 'chunks.jsonl');
+const META_PATH = path.join(INDEX_DIR_FS, 'meta.json');
 
 const CHUNK_MAX_LINES = 120;
 const CHUNK_MAX_CHARS = 6000;
-const FIXED_GENERATED_AT = '1970-01-01T00:00:00.000Z';
+const RULESET_VERSION = '2.0.0';
+
+const CHUNK_SENSITIVE_PATTERNS = [
+  '.env*',
+  '*.pem',
+  '*.key',
+  '*.p12',
+  '*.pfx',
+  'id_rsa*',
+  'id_ed25519*',
+  '*.crt',
+  '*.cer',
+  '*.jks',
+  '*kubeconfig*',
+  '*.sqlite',
+  '*.db',
+  '.npmrc',
+  '.yarnrc',
+  'docs/agent-index/**',
+] as const;
 
 const LANGUAGE_BY_EXT: Record<string, string> = {
   cjs: 'javascript',
@@ -60,25 +102,6 @@ const LANGUAGE_BY_EXT: Record<string, string> = {
   yml: 'yaml',
 };
 
-const CHUNK_SENSITIVE_PATTERNS = [
-  '.env*',
-  '*.pem',
-  '*.key',
-  '*.p12',
-  '*.pfx',
-  'id_rsa*',
-  'id_ed25519*',
-  '*.crt',
-  '*.cer',
-  '*.jks',
-  '*kubeconfig*',
-  '*.sqlite',
-  '*.db',
-  '.npmrc',
-  '.yarnrc',
-  'docs/agent-index/**',
-] as const;
-
 async function main() {
   const command = process.argv[2];
   if (command === 'sync') {
@@ -94,62 +117,58 @@ async function main() {
 }
 
 async function syncIndex() {
-  const trackedFiles = getTrackedFiles();
+  const includeContent = shouldIncludeContent();
+  const trackedFiles = getTrackedFiles().filter(
+    (entry) => !isIndexFile(entry.path),
+  );
   const manifestEntries: ManifestEntry[] = [];
   const chunkEntries: ChunkEntry[] = [];
+  const blobCache = new Map<string, Buffer>();
 
-  for (const relPath of trackedFiles) {
-    if (relPath.startsWith(`${INDEX_DIR}/`)) {
-      continue;
-    }
-
-    const absPath = path.join(process.cwd(), relPath);
-    const buffer = await fs.readFile(absPath);
-    const kind: ManifestEntry['kind'] = isBinary(buffer) ? 'binary' : 'text';
+  for (const trackedFile of trackedFiles) {
+    const relPath = trackedFile.path;
+    const fileBuffer = getBlobBuffer(trackedFile.blobId, blobCache);
+    const kind: ManifestKind = isBinary(fileBuffer) ? 'binary' : 'text';
     const ext = path.extname(relPath).replace('.', '').toLowerCase();
     const language = detectLanguage(relPath, ext);
-    const entry: ManifestEntry = {
+
+    manifestEntries.push({
       path: relPath,
-      size: buffer.byteLength,
-      sha256: sha256(buffer),
+      size: fileBuffer.byteLength,
+      sha256: sha256(fileBuffer),
       kind,
       ext,
       language,
-    };
-    manifestEntries.push(entry);
+    });
 
     if (kind === 'binary' || isSensitiveChunkPath(relPath)) {
       continue;
     }
 
-    const content = buffer.toString('utf8').replace(/\r\n/g, '\n');
-    const chunks = splitIntoChunks(relPath, content);
-    chunkEntries.push(...chunks);
+    const normalized = normalizeFileContent(fileBuffer);
+    chunkEntries.push(...splitIntoChunks(relPath, normalized, includeContent));
   }
 
-  await fs.mkdir(INDEX_DIR, { recursive: true });
-  await fs.writeFile(
-    MANIFEST_PATH,
-    toJsonLines(manifestEntries, true),
-    'utf8'
-  );
-  await fs.writeFile(CHUNKS_PATH, toJsonLines(chunkEntries, true), 'utf8');
+  manifestEntries.sort(compareByPath);
+  chunkEntries.sort(compareChunkEntries);
 
-  const meta = {
-    version: 1,
-    generated_at: FIXED_GENERATED_AT,
-    source: 'git ls-files',
-    ruleset: {
-      chunk_max_lines: CHUNK_MAX_LINES,
-      chunk_max_chars: CHUNK_MAX_CHARS,
-      chunk_sensitive_excludes: CHUNK_SENSITIVE_PATTERNS,
-      excluded_prefixes: [INDEX_DIR],
-    },
-  };
-  await fs.writeFile(META_PATH, `${JSON.stringify(meta, null, 2)}\n`, 'utf8');
+  const metadata = getMetaEntry(includeContent);
+
+  await fs.mkdir(INDEX_DIR_FS, { recursive: true });
+  await fs.writeFile(MANIFEST_PATH, toManifestJsonl(manifestEntries), 'utf8');
+  await fs.writeFile(
+    CHUNKS_PATH,
+    toChunkJsonl(chunkEntries, includeContent),
+    'utf8',
+  );
+  await fs.writeFile(
+    META_PATH,
+    `${JSON.stringify(metadata, null, 2)}\n`,
+    'utf8',
+  );
 
   console.log(
-    `Synced ${manifestEntries.length} manifest entries and ${chunkEntries.length} chunks.`
+    `Synced ${manifestEntries.length} manifest entries and ${chunkEntries.length} chunks.`,
   );
 }
 
@@ -162,74 +181,261 @@ async function validateIndex() {
 
   const manifestEntries = parseJsonLines<ManifestEntry>(manifestRaw);
   const chunkEntries = parseJsonLines<ChunkEntry>(chunksRaw);
-  const meta = JSON.parse(metaRaw) as {
-    version?: number;
-    generated_at?: string;
-    source?: string;
-  };
+  const meta = JSON.parse(metaRaw) as MetaEntry;
 
-  if (meta.version !== 1 || meta.source !== 'git ls-files') {
-    throw new Error('meta.json has an unexpected version/source value.');
-  }
+  validateMeta(meta);
+  validateManifestShape(manifestEntries);
+  validateChunkShape(chunkEntries, meta.include_content);
 
-  assertSortedAndUnique(manifestEntries.map((entry) => entry.path), 'manifest');
-  assertSortedAndUnique(
-    chunkEntries.map((entry) => `${entry.path}:${entry.start_line}`),
-    'chunks'
+  const trackedFiles = getTrackedFiles().filter(
+    (entry) => !isIndexFile(entry.path),
   );
+  const trackedPaths = trackedFiles.map((entry) => entry.path);
+  assertExactCoverage(trackedPaths, manifestEntries);
 
-  for (const entry of manifestEntries) {
-    if (!entry.path || typeof entry.size !== 'number' || !entry.sha256) {
-      throw new Error(`Invalid manifest entry: ${JSON.stringify(entry)}`);
+  const manifestByPath = new Map(
+    manifestEntries.map((entry) => [entry.path, entry]),
+  );
+  const blobByPath = new Map(trackedFiles.map((entry) => [entry.path, entry]));
+  const blobCache = new Map<string, Buffer>();
+
+  for (const trackedFile of trackedFiles) {
+    const relPath = trackedFile.path;
+    const entry = manifestByPath.get(relPath);
+    if (!entry) {
+      throw new Error(`Missing tracked file in manifest: ${relPath}`);
     }
-    if (entry.path.startsWith(`${INDEX_DIR}/`)) {
-      throw new Error(`manifest must not include ${INDEX_DIR}: ${entry.path}`);
+
+    const fileBuffer = getBlobBuffer(trackedFile.blobId, blobCache);
+    const ext = path.extname(relPath).replace('.', '').toLowerCase();
+    const language = detectLanguage(relPath, ext);
+    const expectedKind: ManifestKind = isBinary(fileBuffer) ? 'binary' : 'text';
+    const expectedHash = sha256(fileBuffer);
+
+    if (entry.size !== fileBuffer.byteLength) {
+      throw new Error(
+        `Manifest size mismatch for ${relPath}: expected ${fileBuffer.byteLength}, got ${entry.size}`,
+      );
+    }
+    if (entry.sha256 !== expectedHash) {
+      throw new Error(`Manifest sha256 mismatch for ${relPath}`);
+    }
+    if (entry.kind !== expectedKind) {
+      throw new Error(`Manifest kind mismatch for ${relPath}`);
+    }
+    if (entry.ext !== ext) {
+      throw new Error(
+        `Manifest ext mismatch for ${relPath}: expected ${ext}, got ${entry.ext}`,
+      );
+    }
+    if (entry.language !== language) {
+      throw new Error(
+        `Manifest language mismatch for ${relPath}: expected ${language}, got ${entry.language}`,
+      );
     }
   }
 
+  const fileLineCache = new Map<string, string[]>();
   for (const chunk of chunkEntries) {
+    const manifestEntry = manifestByPath.get(chunk.path);
+    if (!manifestEntry) {
+      throw new Error(`Chunk path missing from manifest: ${chunk.path}`);
+    }
+    if (manifestEntry.kind !== 'text') {
+      throw new Error(`Chunk path must map to text file: ${chunk.path}`);
+    }
     if (isSensitiveChunkPath(chunk.path)) {
       throw new Error(`Sensitive path leaked into chunks: ${chunk.path}`);
     }
-    if (chunk.path.startsWith(`${INDEX_DIR}/`)) {
-      throw new Error(`chunks must not include ${INDEX_DIR}: ${chunk.path}`);
-    }
+
+    const fileLines = await getFileLines(
+      chunk.path,
+      blobByPath,
+      fileLineCache,
+      blobCache,
+    );
     if (chunk.start_line < 1 || chunk.end_line < chunk.start_line) {
-      throw new Error(`Invalid line range in chunk: ${JSON.stringify(chunk)}`);
+      throw new Error(`Invalid chunk line range for ${chunk.path}`);
     }
-    if (sha256(chunk.content) !== chunk.chunk_hash) {
-      throw new Error(`Chunk hash mismatch for ${chunk.path}:${chunk.start_line}`);
+    if (chunk.end_line > fileLines.length) {
+      throw new Error(
+        `Chunk line range out of bounds for ${chunk.path}:${chunk.start_line}-${chunk.end_line}`,
+      );
     }
-  }
 
-  const trackedSet = new Set(
-    getTrackedFiles().filter((relPath) => !relPath.startsWith(`${INDEX_DIR}/`))
-  );
-  const manifestSet = new Set(manifestEntries.map((entry) => entry.path));
+    const actualChunk = fileLines
+      .slice(chunk.start_line - 1, chunk.end_line)
+      .join('\n');
+    if (sha256(actualChunk) !== chunk.chunk_hash) {
+      throw new Error(
+        `Chunk hash mismatch for ${chunk.path}:${chunk.start_line}`,
+      );
+    }
 
-  for (const relPath of trackedSet) {
-    if (!manifestSet.has(relPath)) {
-      throw new Error(`Missing tracked file in manifest: ${relPath}`);
+    if (meta.include_content) {
+      if (chunk.content !== actualChunk) {
+        throw new Error(
+          `Chunk content mismatch for ${chunk.path}:${chunk.start_line}`,
+        );
+      }
+    } else if (Object.hasOwn(chunk, 'content')) {
+      throw new Error(
+        `chunks.jsonl contains content but include_content=false (${chunk.path})`,
+      );
     }
   }
 
   console.log('Index validation passed.');
 }
 
-function getTrackedFiles(): string[] {
-  const output = execFileSync('git', ['ls-files', '-z'], {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-  return output
-    .split('\u0000')
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .map((relPath) => relPath.replace(/\\/g, '/'))
-    .sort((a, b) => a.localeCompare(b));
+function getMetaEntry(includeContent: boolean): MetaEntry {
+  return {
+    git_sha: runGit(['rev-parse', 'HEAD']).trim(),
+    generated_at: runGit(['show', '-s', '--format=%cI', 'HEAD']).trim(),
+    nx_version: getNxVersion(),
+    node_version: process.version,
+    ruleset_version: RULESET_VERSION,
+    source: 'git ls-files',
+    include_content: includeContent,
+    coverage_excludes: [INDEX_PREFIX],
+    chunk_max_lines: CHUNK_MAX_LINES,
+    chunk_max_chars: CHUNK_MAX_CHARS,
+    chunk_sensitive_excludes: CHUNK_SENSITIVE_PATTERNS,
+  };
 }
 
-function splitIntoChunks(relPath: string, content: string): ChunkEntry[] {
+function validateMeta(meta: MetaEntry) {
+  const expected = getMetaEntry(meta.include_content);
+  const requiredCoverageExcludes = [INDEX_PREFIX];
+
+  if (meta.source !== 'git ls-files') {
+    throw new Error('meta.source must be "git ls-files".');
+  }
+  if (meta.ruleset_version !== RULESET_VERSION) {
+    throw new Error(`meta.ruleset_version must be ${RULESET_VERSION}.`);
+  }
+  if (meta.git_sha !== expected.git_sha) {
+    throw new Error('meta.git_sha does not match current HEAD.');
+  }
+  if (meta.generated_at !== expected.generated_at) {
+    throw new Error('meta.generated_at must match HEAD commit timestamp.');
+  }
+  if (meta.nx_version !== expected.nx_version) {
+    throw new Error(`meta.nx_version must be ${expected.nx_version}.`);
+  }
+  if (meta.node_version !== expected.node_version) {
+    throw new Error(`meta.node_version must be ${expected.node_version}.`);
+  }
+  if (!Array.isArray(meta.coverage_excludes)) {
+    throw new Error('meta.coverage_excludes must be an array.');
+  }
+  for (const required of requiredCoverageExcludes) {
+    if (!meta.coverage_excludes.includes(required)) {
+      throw new Error(`meta.coverage_excludes must include "${required}".`);
+    }
+  }
+  if (meta.chunk_max_lines !== CHUNK_MAX_LINES) {
+    throw new Error(`meta.chunk_max_lines must be ${CHUNK_MAX_LINES}.`);
+  }
+  if (meta.chunk_max_chars !== CHUNK_MAX_CHARS) {
+    throw new Error(`meta.chunk_max_chars must be ${CHUNK_MAX_CHARS}.`);
+  }
+  if (!Array.isArray(meta.chunk_sensitive_excludes)) {
+    throw new Error('meta.chunk_sensitive_excludes must be an array.');
+  }
+}
+
+function validateManifestShape(entries: ManifestEntry[]) {
+  assertSortedAndUnique(
+    entries.map((entry) => entry.path),
+    'manifest',
+  );
+  for (const entry of entries) {
+    if (!entry.path) {
+      throw new Error(`Invalid manifest path: ${JSON.stringify(entry)}`);
+    }
+    if (isIndexFile(entry.path)) {
+      throw new Error(`Manifest must exclude ${INDEX_PREFIX}: ${entry.path}`);
+    }
+    if (typeof entry.size !== 'number' || entry.size < 0) {
+      throw new Error(`Invalid manifest size for ${entry.path}`);
+    }
+    if (typeof entry.sha256 !== 'string' || entry.sha256.length !== 64) {
+      throw new Error(`Invalid manifest sha256 for ${entry.path}`);
+    }
+    if (entry.kind !== 'text' && entry.kind !== 'binary') {
+      throw new Error(`Invalid manifest kind for ${entry.path}`);
+    }
+    if (typeof entry.ext !== 'string') {
+      throw new Error(`Invalid manifest ext for ${entry.path}`);
+    }
+    if (typeof entry.language !== 'string' || entry.language.length === 0) {
+      throw new Error(`Invalid manifest language for ${entry.path}`);
+    }
+  }
+}
+
+function validateChunkShape(entries: ChunkEntry[], includeContent: boolean) {
+  assertChunkOrder(entries);
+  for (const chunk of entries) {
+    if (!chunk.path) {
+      throw new Error(`Invalid chunk path: ${JSON.stringify(chunk)}`);
+    }
+    if (isIndexFile(chunk.path)) {
+      throw new Error(`Chunks must exclude ${INDEX_PREFIX}: ${chunk.path}`);
+    }
+    if (chunk.start_line < 1 || chunk.end_line < chunk.start_line) {
+      throw new Error(`Invalid chunk range for ${chunk.path}`);
+    }
+    if (
+      typeof chunk.chunk_hash !== 'string' ||
+      chunk.chunk_hash.length !== 64
+    ) {
+      throw new Error(
+        `Invalid chunk hash for ${chunk.path}:${chunk.start_line}`,
+      );
+    }
+    if (includeContent) {
+      if (typeof chunk.content !== 'string') {
+        throw new Error(
+          `Chunk content must be present when include_content=true (${chunk.path})`,
+        );
+      }
+    } else if (Object.hasOwn(chunk, 'content')) {
+      throw new Error(
+        `Chunk content must be omitted when include_content=false (${chunk.path})`,
+      );
+    }
+  }
+}
+
+function assertExactCoverage(
+  trackedFiles: string[],
+  manifestEntries: ManifestEntry[],
+) {
+  const trackedSet = new Set(trackedFiles);
+  const manifestPaths = manifestEntries.map((entry) => entry.path);
+  const manifestSet = new Set(manifestPaths);
+
+  for (const trackedPath of trackedSet) {
+    if (!manifestSet.has(trackedPath)) {
+      throw new Error(
+        `Missing tracked file in manifest coverage: ${trackedPath}`,
+      );
+    }
+  }
+  for (const manifestPath of manifestSet) {
+    if (!trackedSet.has(manifestPath)) {
+      throw new Error(`Manifest contains non-tracked file: ${manifestPath}`);
+    }
+  }
+}
+
+function splitIntoChunks(
+  relPath: string,
+  content: string,
+  includeContent: boolean,
+): ChunkEntry[] {
   const lines = content.split('\n');
   if (lines.length > 0 && lines[lines.length - 1] === '') {
     lines.pop();
@@ -248,14 +454,18 @@ function splitIntoChunks(relPath: string, content: string): ChunkEntry[] {
     if (currentLines.length === 0) {
       return;
     }
+
     const chunkContent = currentLines.join('\n');
-    chunks.push({
+    const chunkEntry: ChunkEntry = {
       path: relPath,
       start_line: startLine,
       end_line: endLine,
       chunk_hash: sha256(chunkContent),
-      content: chunkContent,
-    });
+    };
+    if (includeContent) {
+      chunkEntry.content = chunkContent;
+    }
+    chunks.push(chunkEntry);
     currentLines = [];
     currentChars = 0;
   };
@@ -275,15 +485,101 @@ function splitIntoChunks(relPath: string, content: string): ChunkEntry[] {
     currentChars += line.length + 1;
     endLine = lineNumber;
   }
+
   flush();
   return chunks;
+}
+
+function toManifestJsonl(entries: ManifestEntry[]): string {
+  const lines = entries.map((entry) =>
+    JSON.stringify({
+      path: entry.path,
+      size: entry.size,
+      sha256: entry.sha256,
+      kind: entry.kind,
+      ext: entry.ext,
+      language: entry.language,
+    }),
+  );
+  return `${lines.join('\n')}\n`;
+}
+
+function toChunkJsonl(entries: ChunkEntry[], includeContent: boolean): string {
+  const lines = entries.map((entry) => {
+    if (includeContent) {
+      return JSON.stringify({
+        path: entry.path,
+        start_line: entry.start_line,
+        end_line: entry.end_line,
+        chunk_hash: entry.chunk_hash,
+        content: entry.content ?? '',
+      });
+    }
+
+    return JSON.stringify({
+      path: entry.path,
+      start_line: entry.start_line,
+      end_line: entry.end_line,
+      chunk_hash: entry.chunk_hash,
+    });
+  });
+  return `${lines.join('\n')}\n`;
+}
+
+function parseJsonLines<T>(raw: string): T[] {
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as T);
+}
+
+function assertSortedAndUnique(paths: string[], label: string) {
+  const seen = new Set<string>();
+  let previous = '';
+  for (const value of paths) {
+    if (seen.has(value)) {
+      throw new Error(`${label} contains duplicate key: ${value}`);
+    }
+    if (previous !== '' && previous.localeCompare(value) > 0) {
+      throw new Error(`${label} is not sorted: ${previous} > ${value}`);
+    }
+    seen.add(value);
+    previous = value;
+  }
+}
+
+function assertChunkOrder(chunks: ChunkEntry[]) {
+  let previousPath = '';
+  let previousLine = 0;
+  const seen = new Set<string>();
+
+  for (const chunk of chunks) {
+    const key = `${chunk.path}:${chunk.start_line}:${chunk.end_line}`;
+    if (seen.has(key)) {
+      throw new Error(`chunks contains duplicate key: ${key}`);
+    }
+    seen.add(key);
+
+    if (previousPath !== '' && previousPath.localeCompare(chunk.path) > 0) {
+      throw new Error(`chunks is not sorted: ${previousPath} > ${chunk.path}`);
+    }
+    if (previousPath === chunk.path && previousLine > chunk.start_line) {
+      throw new Error(
+        `chunks is not sorted: ${chunk.path}:${previousLine} > ${chunk.path}:${chunk.start_line}`,
+      );
+    }
+
+    previousPath = chunk.path;
+    previousLine = chunk.start_line;
+  }
 }
 
 function isSensitiveChunkPath(relPath: string): boolean {
   const normalized = relPath.toLowerCase();
   const base = path.posix.basename(normalized);
 
-  if (normalized.startsWith(`${INDEX_DIR}/`)) {
+  if (isIndexFile(relPath)) {
     return true;
   }
   if (base.startsWith('.env')) {
@@ -313,35 +609,79 @@ function isSensitiveChunkPath(relPath: string): boolean {
   return sensitiveExts.some((ext) => normalized.endsWith(ext));
 }
 
-function toJsonLines(entries: Array<Record<string, unknown>>, withFinalLf: boolean) {
-  if (entries.length === 0) {
-    return withFinalLf ? '\n' : '';
-  }
-  const body = entries.map((entry) => JSON.stringify(entry)).join('\n');
-  return withFinalLf ? `${body}\n` : body;
-}
-
-function parseJsonLines<T>(raw: string): T[] {
-  return raw
-    .split(/\r?\n/)
-    .map((line) => line.trim())
+function getTrackedFiles(): TrackedFileEntry[] {
+  const output = runGit(['ls-files', '-s', '-z']);
+  const entries = output
+    .split('\u0000')
     .filter(Boolean)
-    .map((line) => JSON.parse(line) as T);
+    .map((record) => {
+      const tabIndex = record.indexOf('\t');
+      if (tabIndex === -1) {
+        throw new Error(`Invalid git ls-files -s output: ${record}`);
+      }
+
+      const header = record.slice(0, tabIndex).trim().split(/\s+/);
+      if (header.length < 3) {
+        throw new Error(`Invalid git ls-files -s header: ${record}`);
+      }
+
+      const blobId = header[1];
+      const stage = header[2];
+      if (stage !== '0') {
+        throw new Error(
+          `Git index has non-stage-0 entry (${stage}) for ${record.slice(tabIndex + 1)}`,
+        );
+      }
+
+      return {
+        path: record.slice(tabIndex + 1).replace(/\\/g, '/'),
+        blobId,
+      };
+    });
+
+  return entries.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function assertSortedAndUnique(items: string[], label: string) {
-  const seen = new Set<string>();
-  let previous = '';
-  for (const item of items) {
-    if (seen.has(item)) {
-      throw new Error(`${label} contains duplicate key: ${item}`);
+function getNxVersion(): string {
+  try {
+    const nxPackagePath = path.join(
+      process.cwd(),
+      'node_modules',
+      'nx',
+      'package.json',
+    );
+    const nxPackage = JSON.parse(readFileSync(nxPackagePath, 'utf8')) as {
+      version?: string;
+    };
+    if (typeof nxPackage.version === 'string') {
+      return nxPackage.version;
     }
-    if (previous && previous.localeCompare(item) > 0) {
-      throw new Error(`${label} is not sorted: ${previous} > ${item}`);
-    }
-    seen.add(item);
-    previous = item;
+  } catch {
+    // Fall through to workspace package.json.
   }
+
+  const workspacePackage = JSON.parse(readFileSync('package.json', 'utf8')) as {
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
+  };
+  const version =
+    workspacePackage.devDependencies?.nx ??
+    workspacePackage.dependencies?.nx ??
+    'unknown';
+  return version.replace(/^[~^]/, '');
+}
+
+function runGit(args: string[]): string {
+  return execFileSync('git', args, {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+}
+
+function shouldIncludeContent(): boolean {
+  return (
+    String(process.env.INDEX_INCLUDE_CONTENT ?? '').toLowerCase() === 'true'
+  );
 }
 
 function detectLanguage(relPath: string, ext: string): string {
@@ -355,8 +695,8 @@ function detectLanguage(relPath: string, ext: string): string {
   return LANGUAGE_BY_EXT[ext] ?? 'unknown';
 }
 
-function sha256(input: Buffer | string): string {
-  return createHash('sha256').update(input).digest('hex');
+function normalizeFileContent(buffer: Buffer): string {
+  return buffer.toString('utf8').replace(/\r\n/g, '\n');
 }
 
 function isBinary(buffer: Buffer): boolean {
@@ -381,6 +721,68 @@ function isBinary(buffer: Buffer): boolean {
     }
   }
   return suspiciousBytes / sampleSize > 0.3;
+}
+
+function sha256(input: Buffer | string): string {
+  return createHash('sha256').update(input).digest('hex');
+}
+
+function compareByPath(a: { path: string }, b: { path: string }): number {
+  return a.path.localeCompare(b.path);
+}
+
+function compareChunkEntries(a: ChunkEntry, b: ChunkEntry): number {
+  const pathCompare = a.path.localeCompare(b.path);
+  if (pathCompare !== 0) {
+    return pathCompare;
+  }
+  return a.start_line - b.start_line;
+}
+
+async function getFileLines(
+  relPath: string,
+  blobByPath: Map<string, TrackedFileEntry>,
+  cache: Map<string, string[]>,
+  blobCache: Map<string, Buffer>,
+): Promise<string[]> {
+  const cached = cache.get(relPath);
+  if (cached) {
+    return cached;
+  }
+
+  const trackedFile = blobByPath.get(relPath);
+  if (!trackedFile) {
+    throw new Error(`Missing git blob mapping for ${relPath}`);
+  }
+
+  const content = normalizeFileContent(
+    getBlobBuffer(trackedFile.blobId, blobCache),
+  );
+  const lines = content.split('\n');
+  if (lines.length > 0 && lines[lines.length - 1] === '') {
+    lines.pop();
+  }
+  cache.set(relPath, lines);
+  return lines;
+}
+
+function getBlobBuffer(blobId: string, cache: Map<string, Buffer>): Buffer {
+  const cached = cache.get(blobId);
+  if (cached) {
+    return cached;
+  }
+
+  const buffer = execFileSync('git', ['cat-file', '-p', blobId], {
+    encoding: 'buffer',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    maxBuffer: 1024 * 1024 * 64,
+  });
+  cache.set(blobId, buffer);
+  return buffer;
+}
+
+function isIndexFile(relPath: string): boolean {
+  return relPath.startsWith(INDEX_PREFIX);
 }
 
 main().catch((error: unknown) => {

@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   index:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
         run: npx nx run ai-indexer:sync
 
       - name: Verify Index Is Committed
-        run: git diff --exit-code docs/agent-index
+        run: git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl
 
       - name: Validate Index
         run: npx nx run ai-indexer:validate

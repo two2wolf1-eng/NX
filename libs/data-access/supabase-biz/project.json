@@ -1,16 +1,9 @@
 {
-    "name":  "data-access-supabase-biz",
-    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "libs/data-access/supabase-biz/src",
-    "projectType":  "library",
-    "tags":  [
-                 "type:lib",
-                 "layer:data-access",
-                 "data:biz",
-                 "scope:shared"
-             ],
-    "// targets":  "to see all targets run: nx show project @nx/supabase-biz --web",
-    "targets":  {
-
-                }
+  "name": "data-access-supabase-biz",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-access/supabase-biz/src",
+  "projectType": "library",
+  "tags": ["type:lib", "layer:data-access", "data:biz", "scope:shared"],
+  "// targets": "to see all targets run: nx show project @nx/supabase-biz --web",
+  "targets": {}
 }

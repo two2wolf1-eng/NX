@@ -1,0 +1,53 @@
+name: Release Audit
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Release Audit
+        run: npx nx run workspace-policy:release-audit
+
+      - name: Upload Release Audit Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-audit-report
+          path: dist/reports/release-audit-report.md
+          if-no-files-found: error
+
+      - name: Upload Acceptance Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-report
+          path: dist/reports/acceptance-report.md
+          if-no-files-found: error
+
+      - name: Upload Migration Bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-audit-migration-bundles
+          path: dist/migrations/**
+          if-no-files-found: error

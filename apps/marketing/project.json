@@ -1,16 +1,9 @@
 {
-    "name":  "marketing",
-    "$schema":  "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "apps/marketing",
-    "projectType":  "application",
-    "tags":  [
-                 "type:app",
-                 "scope:marketing",
-                 "layer:ui",
-                 "data:biz"
-             ],
-    "// targets":  "to see all targets run: nx show project @nx/marketing --web",
-    "targets":  {
-
-                }
+  "name": "marketing",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/marketing",
+  "projectType": "application",
+  "tags": ["type:app", "data:biz", "scope:marketing"],
+  "// targets": "to see all targets run: nx show project @nx/marketing --web",
+  "targets": {}
 }

@@ -34,10 +34,15 @@ export default [
             {
               sourceTag: 'scope:worker',
               onlyDependOnLibsWithTags: ['*'],
-              notDependOnLibsWithTags: ['data:secret', 'secret-access-lib'],
+              notDependOnLibsWithTags: ['secret-access-lib'],
             },
             {
-              sourceTag: 'layer:shared',
+              sourceTag: 'scope:shared',
+              onlyDependOnLibsWithTags: ['*'],
+              notDependOnLibsWithTags: ['secret-access-lib'],
+            },
+            {
+              sourceTag: 'type:infra',
               onlyDependOnLibsWithTags: ['*'],
               notDependOnLibsWithTags: ['secret-access-lib'],
             },
@@ -54,6 +59,10 @@ export default [
             {
               sourceTag: 'layer:contract',
               onlyDependOnLibsWithTags: ['layer:shared'],
+            },
+            {
+              sourceTag: 'scope:secret',
+              onlyDependOnLibsWithTags: ['*'],
             },
             {
               sourceTag: '*',

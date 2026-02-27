@@ -1,15 +1,9 @@
 {
-    "name":  "shared-config",
-    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "libs/shared/config/src",
-    "projectType":  "library",
-    "tags":  [
-                 "type:lib",
-                 "layer:shared",
-                 "scope:shared"
-             ],
-    "// targets":  "to see all targets run: nx show project @nx/config --web",
-    "targets":  {
-
-                }
+  "name": "shared-config",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/config/src",
+  "projectType": "library",
+  "tags": ["type:lib", "layer:shared", "data:biz", "scope:shared"],
+  "// targets": "to see all targets run: nx show project @nx/config --web",
+  "targets": {}
 }

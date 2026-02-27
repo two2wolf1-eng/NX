@@ -1,112 +1,88 @@
 {
-    "name":  "worker",
-    "$schema":  "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "apps/worker/src",
-    "projectType":  "application",
-    "tags":  [
-                 "type:app",
-                 "scope:worker",
-                 "layer:domain",
-                 "data:biz"
-             ],
-    "targets":  {
-                    "build":  {
-                                  "executor":  "@nx/esbuild:esbuild",
-                                  "outputs":  [
-                                                  "{options.outputPath}"
-                                              ],
-                                  "defaultConfiguration":  "production",
-                                  "options":  {
-                                                  "platform":  "node",
-                                                  "outputPath":  "apps/worker/dist",
-                                                  "format":  [
-                                                                 "cjs"
-                                                             ],
-                                                  "bundle":  false,
-                                                  "main":  "apps/worker/src/main.ts",
-                                                  "tsConfig":  "apps/worker/tsconfig.app.json",
-                                                  "assets":  [
-                                                                 "apps/worker/src/assets"
-                                                             ],
-                                                  "esbuildOptions":  {
-                                                                         "sourcemap":  true,
-                                                                         "outExtension":  {
-                                                                                              ".js":  ".js"
-                                                                                          }
-                                                                     }
-                                              },
-                                  "configurations":  {
-                                                         "development":  {
-
-                                                                         },
-                                                         "production":  {
-                                                                            "esbuildOptions":  {
-                                                                                                   "sourcemap":  false,
-                                                                                                   "outExtension":  {
-                                                                                                                        ".js":  ".js"
-                                                                                                                    }
-                                                                                               }
-                                                                        }
-                                                     }
-                              },
-                    "prune-lockfile":  {
-                                           "dependsOn":  [
-                                                             "build"
-                                                         ],
-                                           "cache":  true,
-                                           "executor":  "@nx/js:prune-lockfile",
-                                           "outputs":  [
-                                                           "{workspaceRoot}/apps/worker/dist/package.json",
-                                                           "{workspaceRoot}/apps/worker/dist/package-lock.json"
-                                                       ],
-                                           "options":  {
-                                                           "buildTarget":  "build"
-                                                       }
-                                       },
-                    "copy-workspace-modules":  {
-                                                   "dependsOn":  [
-                                                                     "build"
-                                                                 ],
-                                                   "cache":  true,
-                                                   "outputs":  [
-                                                                   "{workspaceRoot}/apps/worker/dist/workspace_modules"
-                                                               ],
-                                                   "executor":  "@nx/js:copy-workspace-modules",
-                                                   "options":  {
-                                                                   "buildTarget":  "build"
-                                                               }
-                                               },
-                    "prune":  {
-                                  "dependsOn":  [
-                                                    "prune-lockfile",
-                                                    "copy-workspace-modules"
-                                                ],
-                                  "executor":  "nx:noop"
-                              },
-                    "serve":  {
-                                  "continuous":  true,
-                                  "executor":  "@nx/js:node",
-                                  "defaultConfiguration":  "development",
-                                  "dependsOn":  [
-                                                    "build"
-                                                ],
-                                  "options":  {
-                                                  "buildTarget":  "worker:build",
-                                                  "runBuildTargetDependencies":  false
-                                              },
-                                  "configurations":  {
-                                                         "development":  {
-                                                                             "buildTarget":  "worker:build:development"
-                                                                         },
-                                                         "production":  {
-                                                                            "buildTarget":  "worker:build:production"
-                                                                        }
-                                                     }
-                              },
-                    "test":  {
-                                 "options":  {
-                                                 "passWithNoTests":  true
-                                             }
-                             }
-                }
+  "name": "worker",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/worker/src",
+  "projectType": "application",
+  "tags": ["type:app", "data:biz", "scope:worker"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "apps/worker/dist",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/worker/src/main.ts",
+        "tsConfig": "apps/worker/tsconfig.app.json",
+        "assets": ["apps/worker/src/assets"],
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "prune-lockfile": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "executor": "@nx/js:prune-lockfile",
+      "outputs": [
+        "{workspaceRoot}/apps/worker/dist/package.json",
+        "{workspaceRoot}/apps/worker/dist/package-lock.json"
+      ],
+      "options": {
+        "buildTarget": "build"
+      }
+    },
+    "copy-workspace-modules": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "outputs": ["{workspaceRoot}/apps/worker/dist/workspace_modules"],
+      "executor": "@nx/js:copy-workspace-modules",
+      "options": {
+        "buildTarget": "build"
+      }
+    },
+    "prune": {
+      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
+      "executor": "nx:noop"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "worker:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "worker:build:development"
+        },
+        "production": {
+          "buildTarget": "worker:build:production"
+        }
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
 }

@@ -2,8 +2,13 @@
   "name": "@nx/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "acceptance": "node tools/scripts/acceptance-run.mjs"
+  },
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "next": "~16.0.1",
     "react": "^19.0.0",

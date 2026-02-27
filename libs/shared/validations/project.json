@@ -1,15 +1,9 @@
 {
-    "name":  "shared-validations",
-    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "libs/shared/validations/src",
-    "projectType":  "library",
-    "tags":  [
-                 "type:lib",
-                 "layer:shared",
-                 "scope:shared"
-             ],
-    "// targets":  "to see all targets run: nx show project @nx/validations --web",
-    "targets":  {
-
-                }
+  "name": "shared-validations",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/validations/src",
+  "projectType": "library",
+  "tags": ["type:lib", "layer:shared", "data:biz", "scope:shared"],
+  "// targets": "to see all targets run: nx show project @nx/validations --web",
+  "targets": {}
 }
