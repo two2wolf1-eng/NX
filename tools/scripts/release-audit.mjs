@@ -166,10 +166,37 @@ async function runNxStep(name, nxArgs) {
   const result = runCommand(process.execPath, [nxCli, ...nxArgs], display);
   recordStep(name, display, result);
   if (result.status !== 0) {
+    if (name === 'Strict Acceptance Gate') {
+      const combinedOutput = `${result.stdout || ''}\n${result.stderr || ''}`;
+      if (isAgentIndexDiffFailureOutput(combinedOutput)) {
+        throw new Error(buildIndexDiffFailureMessage());
+      }
+    }
+
     throw new Error(`${name} failed.`);
   }
 }
 
+function isAgentIndexDiffFailureOutput(text) {
+  return (
+    text.includes('Agent index content diff detected') ||
+    (text.includes('docs/agent-index/manifest.jsonl') &&
+      text.includes('docs/agent-index/chunks.jsonl') &&
+      text.includes('git diff --exit-code'))
+  );
+}
+
+function buildIndexDiffFailureMessage() {
+  return [
+    'Strict Acceptance Gate failed due agent index content diff (manifest/chunks).',
+    'Run these commands in order:',
+    '1) npm ci',
+    '2) npx nx run ai-indexer:sync',
+    '3) git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl',
+    '4) if diff: git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl && git commit -m "chore(index): refresh deterministic agent index"',
+    '5) npx nx run workspace-policy:release-audit',
+  ].join('\n');
+}
 async function runFormatCheckStep() {
   const command = 'npx nx format:check --all --libs-and-apps';
   if (!isFormatConfigured()) {
