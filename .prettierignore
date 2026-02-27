@@ -4,3 +4,4 @@
 /.nx/cache
 /.nx/workspace-data
 **/next-env.d.ts
+docs/agent-index/meta.json
