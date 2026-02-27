@@ -14,6 +14,10 @@ const reportPath = path.join(
 const allowDirty = isEnabled('ACCEPTANCE_ALLOW_DIRTY');
 const skipBuildAll = isEnabled('ACCEPTANCE_SKIP_BUILD_ALL');
 const skipE2E = isEnabled('ACCEPTANCE_SKIP_E2E');
+const repositoryExcludes = [
+  ':(exclude)docs/agent-index/meta.json',
+  ':(exclude,glob)**/next-env.d.ts',
+];
 const startedAt = new Date();
 const steps = [];
 
@@ -163,7 +167,7 @@ async function runGitIndexIntegrityStep() {
 
 async function runWorkspaceCleanlinessStep() {
   const name = 'Preflight Clean Workspace';
-  const display = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
+  const display = 'git status --porcelain -- . ' + repositoryExcludes.join(' ');
   if (allowDirty) {
     process.stdout.write(
       `\n[acceptance] Skipped ${name} (ACCEPTANCE_ALLOW_DIRTY=true)\n`,
@@ -174,7 +178,7 @@ async function runWorkspaceCleanlinessStep() {
 
   const statusResult = spawnSync(
     'git',
-    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    ['status', '--porcelain', '--', '.', ...repositoryExcludes],
     {
     cwd: workspaceRoot,
     encoding: 'utf8',
@@ -229,7 +233,7 @@ async function runGitDiffStep() {
 
 async function runRepositoryConsistencyStep() {
   const name = 'Verify Repository Consistency';
-  const display = 'git diff --exit-code -- . :(exclude)docs/agent-index/meta.json';
+  const display = 'git diff --exit-code -- . ' + repositoryExcludes.join(' ');
   if (allowDirty) {
     process.stdout.write(
       `\n[acceptance] Skipped ${name} (ACCEPTANCE_ALLOW_DIRTY=true)\n`,
@@ -240,7 +244,7 @@ async function runRepositoryConsistencyStep() {
 
   const diff = runCommand(
     'git',
-    ['diff', '--exit-code', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    ['diff', '--exit-code', '--', '.', ...repositoryExcludes],
     display,
   );
   recordStep(name, display, diff);
@@ -248,10 +252,10 @@ async function runRepositoryConsistencyStep() {
     return;
   }
 
-  const statusDisplay = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
+  const statusDisplay = 'git status --porcelain -- . ' + repositoryExcludes.join(' ');
   const status = runCommand(
     'git',
-    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    ['status', '--porcelain', '--', '.', ...repositoryExcludes],
     statusDisplay,
   );
   recordStep('Repository Porcelain Status', statusDisplay, status);

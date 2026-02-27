@@ -13,6 +13,10 @@ const reportPath = path.join(
 );
 const skipSecretScan = isEnabled('RELEASE_AUDIT_SKIP_SECRET_SCAN');
 const skipNpmAudit = isEnabled('RELEASE_AUDIT_SKIP_NPM_AUDIT');
+const repositoryExcludes = [
+  ':(exclude)docs/agent-index/meta.json',
+  ':(exclude,glob)**/next-env.d.ts',
+];
 const startedAt = new Date();
 const steps = [];
 
@@ -184,10 +188,10 @@ async function runNpmAuditStep() {
 
 async function runRepositoryConsistencyStep() {
   const name = 'Repository Consistency';
-  const command = 'git diff --exit-code -- . :(exclude)docs/agent-index/meta.json';
+  const command = 'git diff --exit-code -- . ' + repositoryExcludes.join(' ');
   const diff = runCommand(
     'git',
-    ['diff', '--exit-code', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    ['diff', '--exit-code', '--', '.', ...repositoryExcludes],
     command,
   );
   recordStep(name, command, diff);
@@ -195,10 +199,10 @@ async function runRepositoryConsistencyStep() {
     return;
   }
 
-  const statusCommand = 'git status --porcelain -- . :(exclude)docs/agent-index/meta.json';
+  const statusCommand = 'git status --porcelain -- . ' + repositoryExcludes.join(' ');
   const status = runCommand(
     'git',
-    ['status', '--porcelain', '--', '.', ':(exclude)docs/agent-index/meta.json'],
+    ['status', '--porcelain', '--', '.', ...repositoryExcludes],
     statusCommand,
   );
   recordStep('Repository Porcelain Status', statusCommand, status);
