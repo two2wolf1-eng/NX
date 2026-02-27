@@ -3,7 +3,7 @@ import { accessSync, constants, promises as fs, readFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-const workspaceRoot = resolveWorkspaceRoot();
+const workspaceRoot = process.cwd();
 const nxCli = path.join(workspaceRoot, 'node_modules', 'nx', 'bin', 'nx.js');
 const reportPath = path.join(
   workspaceRoot,
@@ -32,6 +32,7 @@ const environment = {
 
 async function main() {
   try {
+    await runPreflightStep();
     await runNxStep('Strict Acceptance Gate', [
       'run',
       'workspace-policy:acceptance',
@@ -52,6 +53,89 @@ async function main() {
   if (failed) {
     process.exit(1);
   }
+}
+
+async function runPreflightStep() {
+  runRequiredCommandCheck(
+    'Preflight Node Command',
+    'node -v',
+    'node',
+    ['-v'],
+    'Preflight failed: missing command `node`. Add the Node 22 installation directory to PATH and retry.',
+  );
+  runRequiredCommandCheck(
+    'Preflight Git Command',
+    'git --version',
+    'git',
+    ['--version'],
+    'Preflight failed: missing command `git`. Add Git to PATH and retry.',
+  );
+  runGitRootPreflight(
+    'Preflight Git Root',
+    'git rev-parse --show-toplevel',
+  );
+}
+
+function runRequiredCommandCheck(name, display, command, args, errorMessage) {
+  const raw = spawnSync(command, args, {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const result = normalizePreflightResult(raw);
+  recordStep(name, display, result);
+  if (result.status !== 0) {
+    throw new Error(errorMessage);
+  }
+}
+
+function runGitRootPreflight(name, display) {
+  const raw = spawnSync('git', ['rev-parse', '--show-toplevel'], {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const result = normalizePreflightResult(raw);
+
+  if (result.status !== 0) {
+    recordStep(name, display, result);
+    throw new Error(
+      'Preflight failed: `git rev-parse --show-toplevel` failed. Run from the repository root and verify Git is available.',
+    );
+  }
+
+  const gitRoot = result.stdout.trim();
+  if (!gitRoot) {
+    const failure = { status: 1, stdout: '', stderr: 'git root is empty' };
+    recordStep(name, display, failure);
+    throw new Error(
+      'Preflight failed: unable to resolve git root. Run from the repository root and verify the Git repository is intact.',
+    );
+  }
+
+  if (toComparablePath(gitRoot) !== toComparablePath(workspaceRoot)) {
+    const failure = {
+      status: 1,
+      stdout: `cwd=${workspaceRoot}\ngitRoot=${gitRoot}`,
+      stderr: '',
+    };
+    recordStep(name, display, failure);
+    throw new Error(
+      `Preflight failed: current directory is not the git root. Switch to ${gitRoot} and retry.`,
+    );
+  }
+
+  recordStep(name, display, result);
+}
+
+function normalizePreflightResult(raw) {
+  return {
+    status: raw.error ? 1 : (raw.status ?? 1),
+    stdout: raw.stdout ?? '',
+    stderr: [raw.stderr ?? '', raw.error?.message ?? '']
+      .filter((item) => item.length > 0)
+      .join('\n'),
+  };
 }
 
 async function runNxStep(name, nxArgs) {
@@ -365,35 +449,6 @@ function getNxVersion() {
   } catch {
     return 'unknown';
   }
-}
-
-function resolveWorkspaceRoot() {
-  const cwd = process.cwd();
-  const result = spawnSync('git', ['rev-parse', '--show-toplevel'], {
-    cwd,
-    encoding: 'utf8',
-    stdio: 'pipe',
-  });
-
-  if ((result.status ?? 1) !== 0) {
-    const reason = (result.stderr ?? '').trim() || 'unknown error';
-    throw new Error(
-      `Git preflight failed: unable to resolve repository root from cwd (${cwd}). ${reason}`,
-    );
-  }
-
-  const gitRoot = (result.stdout ?? '').trim();
-  if (!gitRoot) {
-    throw new Error('Git preflight failed: git root is empty.');
-  }
-
-  if (toComparablePath(cwd) !== toComparablePath(gitRoot)) {
-    throw new Error(
-      `Git preflight failed: run release audit from git root. cwd=${cwd}, gitRoot=${gitRoot}`,
-    );
-  }
-
-  return gitRoot;
 }
 
 function toComparablePath(targetPath) {

@@ -33,6 +33,7 @@ const environment = {
 
 async function main() {
   try {
+    await runPreflightStep();
     await runGitIndexIntegrityStep();
     await runWorkspaceCleanlinessStep();
     await runNxStep('Workspace Policy Lint', ['run', 'workspace-policy:lint']);
@@ -95,6 +96,89 @@ async function main() {
   if (failed) {
     process.exit(1);
   }
+}
+
+async function runPreflightStep() {
+  runRequiredCommandCheck(
+    'Preflight Node Command',
+    'node -v',
+    'node',
+    ['-v'],
+    'Preflight failed: missing command `node`. Add the Node 22 installation directory to PATH and retry.',
+  );
+  runRequiredCommandCheck(
+    'Preflight Git Command',
+    'git --version',
+    'git',
+    ['--version'],
+    'Preflight failed: missing command `git`. Add Git to PATH and retry.',
+  );
+  runGitRootPreflight(
+    'Preflight Git Root',
+    'git rev-parse --show-toplevel',
+  );
+}
+
+function runRequiredCommandCheck(name, display, command, args, errorMessage) {
+  const raw = spawnSync(command, args, {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const result = normalizePreflightResult(raw);
+  recordStep(name, display, result);
+  if (result.status !== 0) {
+    throw new Error(errorMessage);
+  }
+}
+
+function runGitRootPreflight(name, display) {
+  const raw = spawnSync('git', ['rev-parse', '--show-toplevel'], {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const result = normalizePreflightResult(raw);
+
+  if (result.status !== 0) {
+    recordStep(name, display, result);
+    throw new Error(
+      'Preflight failed: `git rev-parse --show-toplevel` failed. Run from the repository root and verify Git is available.',
+    );
+  }
+
+  const gitRoot = result.stdout.trim();
+  if (!gitRoot) {
+    const failure = { status: 1, stdout: '', stderr: 'git root is empty' };
+    recordStep(name, display, failure);
+    throw new Error(
+      'Preflight failed: unable to resolve git root. Run from the repository root and verify the Git repository is intact.',
+    );
+  }
+
+  if (toComparablePath(gitRoot) !== toComparablePath(workspaceRoot)) {
+    const failure = {
+      status: 1,
+      stdout: `cwd=${workspaceRoot}\ngitRoot=${gitRoot}`,
+      stderr: '',
+    };
+    recordStep(name, display, failure);
+    throw new Error(
+      `Preflight failed: current directory is not the git root. Switch to ${gitRoot} and retry.`,
+    );
+  }
+
+  recordStep(name, display, result);
+}
+
+function normalizePreflightResult(raw) {
+  return {
+    status: raw.error ? 1 : (raw.status ?? 1),
+    stdout: raw.stdout ?? '',
+    stderr: [raw.stderr ?? '', raw.error?.message ?? '']
+      .filter((item) => item.length > 0)
+      .join('\n'),
+  };
 }
 
 async function runNxStep(name, nxArgs) {
@@ -471,6 +555,11 @@ async function listFiles(dirPath) {
     }
   }
   return files;
+}
+
+function toComparablePath(targetPath) {
+  const normalized = path.resolve(targetPath).replace(/\\/g, '/');
+  return process.platform === 'win32' ? normalized.toLowerCase() : normalized;
 }
 
 function escapePipes(text) {
