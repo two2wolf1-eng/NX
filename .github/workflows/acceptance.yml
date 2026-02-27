@@ -27,6 +27,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
       - name: Run Workspace Acceptance
         run: npx nx run workspace-policy:acceptance
 
