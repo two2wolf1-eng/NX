@@ -113,10 +113,7 @@ async function runPreflightStep() {
     ['--version'],
     'Preflight failed: missing command `git`. Add Git to PATH and retry.',
   );
-  runGitRootPreflight(
-    'Preflight Git Root',
-    'git rev-parse --show-toplevel',
-  );
+  runGitRootPreflight('Preflight Git Root', 'git rev-parse --show-toplevel');
 }
 
 function runRequiredCommandCheck(name, display, command, args, errorMessage) {
