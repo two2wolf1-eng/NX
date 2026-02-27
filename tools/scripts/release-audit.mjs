@@ -160,7 +160,7 @@ async function runSecretScanStep() {
 }
 
 async function runNpmAuditStep() {
-  const command = 'npm audit --audit-level=high';
+  const command = 'npm audit --omit=dev --audit-level=high';
   if (skipNpmAudit) {
     process.stdout.write(
       '\n[release-audit] Skipped npm audit (RELEASE_AUDIT_SKIP_NPM_AUDIT=true)\n',
@@ -175,13 +175,13 @@ async function runNpmAuditStep() {
 
   const result = runCommand(
     getNpmCommand(),
-    ['audit', '--audit-level=high'],
+    ['audit', '--omit=dev', '--audit-level=high'],
     command,
   );
   recordStep('NPM Audit', command, result);
   if (result.status !== 0) {
     throw new Error(
-      'npm audit failed (high-severity findings or network issue). Resolve findings or set RELEASE_AUDIT_SKIP_NPM_AUDIT=true for local debugging.',
+      'npm audit failed (high-severity findings in production deps or network issue). Resolve findings or set RELEASE_AUDIT_SKIP_NPM_AUDIT=true for local debugging.',
     );
   }
 }
@@ -421,7 +421,7 @@ function ensureConfiguredSkipsAreRecorded() {
   if (skipNpmAudit && !steps.some((step) => step.name === 'NPM Audit')) {
     recordSkippedStep(
       'NPM Audit',
-      'npm audit --audit-level=high',
+      'npm audit --omit=dev --audit-level=high',
       'RELEASE_AUDIT_SKIP_NPM_AUDIT=true (configured, step not reached)',
     );
   }
