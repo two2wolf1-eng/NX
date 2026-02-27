@@ -339,7 +339,7 @@ async function runGitDiffStep() {
   );
   recordStep('Agent Index Porcelain Status', statusDisplay, status);
   throw new Error(
-    `Agent index content diff detected for manifest/chunks. Follow this fixed order:\n1) npm ci\n2) npx nx run ai-indexer:sync\n3) git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl\n4) if diff: git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl && git commit -m "chore(index): refresh deterministic agent index"\nThen rerun release-audit.\n\ngit status output:\n${(status.stdout || '').trim() || '(empty)'}`,
+    `[INDEX_DIFF_GATE]\nAgent index content diff detected for manifest/chunks. Follow this fixed order:\n1) npm ci\n2) npx nx run ai-indexer:sync\n3) git diff --exit-code docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl\n4) if diff: git add docs/agent-index/manifest.jsonl docs/agent-index/chunks.jsonl && git commit -m "chore(index): refresh deterministic agent index"\nThen rerun release-audit.\n\ngit status output:\n${(status.stdout || '').trim() || '(empty)'}`,
   );
 }
 

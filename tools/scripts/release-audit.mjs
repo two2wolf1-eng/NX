@@ -178,6 +178,10 @@ async function runNxStep(name, nxArgs) {
 }
 
 function isAgentIndexDiffFailureOutput(text) {
+  if (text.includes('[INDEX_DIFF_GATE]')) {
+    return true;
+  }
+
   return (
     text.includes('Agent index content diff detected') ||
     (text.includes('docs/agent-index/manifest.jsonl') &&
