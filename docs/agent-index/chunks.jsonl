@@ -574,9 +574,9 @@
 {"path":"tools/scripts/acceptance-run.mjs","start_line":1,"end_line":103,"chunk_hash":"3393bc134d703f52fb929b0b03bd3b648fd906a4cdef4c1b002c2d4e946094ef"}
 {"path":"tools/scripts/pack-migrations.mjs","start_line":1,"end_line":89,"chunk_hash":"cd7b802e31e4b93087254890427ef4941810b9dfadc64588a5902710c05ab29f"}
 {"path":"tools/scripts/release-audit.mjs","start_line":1,"end_line":120,"chunk_hash":"1df9e19ce70e259a5cbb984070cfac9a95118583dd1a3b24ed89301c585ec410"}
-{"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"c912290b32d38c347079287e612426046b8835cee6a85d0160cb551ce902eaab"}
+{"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"3bc35e5bd3a288331516382997bb29d7bc58d3b101c7bbc366b4312a14fef5c4"}
 {"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"319431d93db9160fe3cbee9950d7e8396844f6271f967bc2d6d80345fe589c24"}
-{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"8067e9aa4efca3feea8e0557053c0bce5ae16e493aebb78c1ea43a816efae2e7"}
+{"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"c8a16480a45bce0819d9fd472a5f7655eeb1f23b88d66f8c9a6cd503b205ab96"}
 {"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":519,"chunk_hash":"176838dfebd335f23c189df5c1da262c1d6f43e7f7a875948531ccc7503ea797"}
 {"path":"tools/scripts/supabase-placeholder.mjs","start_line":1,"end_line":88,"chunk_hash":"eb2f289c62017eab7e43dbc4f9b7d7b71616e6034b03c833da44b8ff8143735b"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":1,"end_line":120,"chunk_hash":"56f62e6233784e1ee2b9fae97a6c0e970f8e19a20ca61d5fe6c3e53f1933e111"}
