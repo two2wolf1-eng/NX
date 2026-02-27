@@ -566,7 +566,7 @@
 {"path":"package-lock.json","start_line":30120,"end_line":30239,"chunk_hash":"ffdbce9fec9b9b1a613be8889b1421fa2c77dec39a09bdd5a09f4dbe46e943d9"}
 {"path":"package-lock.json","start_line":30240,"end_line":30240,"chunk_hash":"d10b36aa74a59bcf4a88185837f658afaf3646eff2bb16c3928d0e9335e945d2"}
 {"path":"package.json","start_line":1,"end_line":80,"chunk_hash":"79b83e640e0c8fe33657a77009cbc1e8801ff82a2ffaf6615480f6d5e39ceb10"}
-{"path":"README.md","start_line":1,"end_line":57,"chunk_hash":"8a880398b4b7ff8c99d82b51caa6392420b0243848857e4bc4136659843b17b5"}
+{"path":"README.md","start_line":1,"end_line":62,"chunk_hash":"4eaa9e77a715c426345921bf7a59b3ee51d84364928d8c0d23c4b55f3bb26f19"}
 {"path":"tools/fixtures/module-boundaries/contract-forbidden-import.ts","start_line":1,"end_line":6,"chunk_hash":"1ee2d33e48a65e325a9a69868d6231103e018829a69abb46c884ead0e63f91a5"}
 {"path":"tools/fixtures/module-boundaries/domain-forbidden-import.ts","start_line":1,"end_line":5,"chunk_hash":"77ca4d4bc656658a8b2310792a1587c660ba0a062fc776813e9c47019d811a62"}
 {"path":"tools/fixtures/module-boundaries/secret-service-allowed-import.ts","start_line":1,"end_line":5,"chunk_hash":"872243e00877aadb25d6df9baef4ae5fd730b01ca8c8198def0334053aa88947"}
@@ -577,8 +577,8 @@
 {"path":"tools/scripts/release-audit.mjs","start_line":121,"end_line":240,"chunk_hash":"757a2413bf4d1a7685a0abc49fe49f2172146ebd85881ec20f9ce2578f8f6312"}
 {"path":"tools/scripts/release-audit.mjs","start_line":241,"end_line":360,"chunk_hash":"2fb652b240127074ec0509d7eba8251e9b8f5c71d29371e275806d8bd927e33d"}
 {"path":"tools/scripts/release-audit.mjs","start_line":361,"end_line":480,"chunk_hash":"72bbc61e0739b81601168a567ef55e18863e37a8159d965078bfe2040ba8e85c"}
-{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":600,"chunk_hash":"f4026ce28f31b7e9459ac3d6d94602dfaa04eadf871737c6b555c4592b9a475d"}
-{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":611,"chunk_hash":"db5a6d809e2219b9d8bf79a2accdb35f00207bd985ab231e71df0f748733cfea"}
+{"path":"tools/scripts/release-audit.mjs","start_line":481,"end_line":600,"chunk_hash":"c7f075e418c0ae7ba372e9c713c34546c3dd920a6b0d946fd8b74b00889d6601"}
+{"path":"tools/scripts/release-audit.mjs","start_line":601,"end_line":615,"chunk_hash":"38c0dc8a4ac91c169b34e927e56a190a7f1ac014b1ce5dad994d9d244c9189c3"}
 {"path":"tools/scripts/supabase-placeholder.mjs","start_line":1,"end_line":88,"chunk_hash":"eb2f289c62017eab7e43dbc4f9b7d7b71616e6034b03c833da44b8ff8143735b"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":1,"end_line":120,"chunk_hash":"56f62e6233784e1ee2b9fae97a6c0e970f8e19a20ca61d5fe6c3e53f1933e111"}
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":121,"end_line":158,"chunk_hash":"47797ea563869f1c15d94a143bbc7c7f22f6ef66ec6550d73f23ccdd765e1c2f"}
@@ -586,7 +586,7 @@
 {"path":"tools/scripts/verify-module-boundaries.mjs","start_line":121,"end_line":179,"chunk_hash":"6953300a2a47b756f16dd32a8321a2598178f484a9918e926f3e5e1f864d0145"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":1,"end_line":120,"chunk_hash":"ca70b18ac889eb709748d813bfe9d6d8035f34e23e762c47ec030d1d16358d41"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":121,"end_line":240,"chunk_hash":"c082bc39c2cca68f5d403f20bf79e2f3a26e5ac81dca1bf277e96471135cf804"}
-{"path":"tools/scripts/workspace-acceptance.mjs","start_line":241,"end_line":360,"chunk_hash":"9b94805fd35673de4bd950f3ecf4eb6a2cab31b6cef79adfec4e9f111115c8f9"}
+{"path":"tools/scripts/workspace-acceptance.mjs","start_line":241,"end_line":360,"chunk_hash":"402b75ee24d0c8ff817b1292b1b03818a518cf2ebbca1a652420ee134daf1366"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":361,"end_line":480,"chunk_hash":"8ff8f890b2413410eb6664dfcb3e06458c39d0b52fff5d85621c15c4b1d88c1f"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":481,"end_line":600,"chunk_hash":"dd7a9617096ce620bf1aa22b0b29a6d91139e9a04e9fec49d7ac277cebcb1663"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":601,"end_line":607,"chunk_hash":"1c5e604f0fea376213aaa0c2627912ac98d4c4668218b015370bb1b2260a7659"}
