@@ -17,7 +17,7 @@
 {"path":".github/workflows/release.yml","start_line":1,"end_line":25,"chunk_hash":"ba96ce30627dbb9c67f3fff4e646f6283b63400f734e488b54cc7bc20990ecf1"}
 {"path":".gitignore","start_line":1,"end_line":51,"chunk_hash":"2462b8a9bac787d73b2d9a9969c32a29bfe32659a1b339776847e6a5e625fe8c"}
 {"path":".nvmrc","start_line":1,"end_line":1,"chunk_hash":"785f3ec7eb32f30b90cd0fcf3657d388b5ff4297f2f9716ff66e9b69c05ddd09"}
-{"path":".prettierignore","start_line":1,"end_line":5,"chunk_hash":"c460aadc057c3f5b13bca07ef4a4ac235f624f4090f58d1b2c5de7886e65978a"}
+{"path":".prettierignore","start_line":1,"end_line":6,"chunk_hash":"0acd6e722a2501c9aa5bd1726ec6a5dac3b710bd619105e7ab26868f99b7d8c3"}
 {"path":".prettierrc","start_line":1,"end_line":3,"chunk_hash":"a93a9720aae9e8b417993b3c7979a0c805c38536975116604b0189db8612cea2"}
 {"path":".vscode/extensions.json","start_line":1,"end_line":9,"chunk_hash":"cf258ebb80f1cb327ce394d0fd5dea18d4d3d7cb66f296a59acb227cbaa6e43c"}
 {"path":".vscode/launch.json","start_line":1,"end_line":59,"chunk_hash":"34bcc0eb7e5b45a02a2eb010ccef19ffb36ce3f040721a29da7c98c3ebad53c4"}
@@ -583,7 +583,7 @@
 {"path":"tools/scripts/validate-project-tags.mjs","start_line":121,"end_line":158,"chunk_hash":"47797ea563869f1c15d94a143bbc7c7f22f6ef66ec6550d73f23ccdd765e1c2f"}
 {"path":"tools/scripts/verify-module-boundaries.mjs","start_line":1,"end_line":120,"chunk_hash":"250c63dcf852877fd0485e101dd87a0ef7a305d246f6eacdfbaab45e3ded1d85"}
 {"path":"tools/scripts/verify-module-boundaries.mjs","start_line":121,"end_line":179,"chunk_hash":"6953300a2a47b756f16dd32a8321a2598178f484a9918e926f3e5e1f864d0145"}
-{"path":"tools/scripts/workspace-acceptance.mjs","start_line":1,"end_line":120,"chunk_hash":"1132c35f0f4736d672ae914fa734a59f8181773a107394ade26fc44d452dd8e2"}
+{"path":"tools/scripts/workspace-acceptance.mjs","start_line":1,"end_line":120,"chunk_hash":"336cf9cdc64d60c02561ef9ce120126bbd5b43666fbcd151def8943ed3c217ed"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":121,"end_line":240,"chunk_hash":"8f246161b35a8d4536b0d17c07841e1e7fd0a362b28b84205ac5de06782c1eee"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":241,"end_line":360,"chunk_hash":"44d3e69054342dcf7f6c62b22bef895e7b2fef9855d1a1b0867837c891e38047"}
 {"path":"tools/scripts/workspace-acceptance.mjs","start_line":361,"end_line":480,"chunk_hash":"d4c740d01a67cb874cb50bac031f68bd9a0e4d33c31e4b9c0f20bad5d4623d64"}

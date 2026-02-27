@@ -12,7 +12,7 @@
 {"path":".github/workflows/release.yml","size":435,"sha256":"cfaabbb247fb02037eff9e34761071050f012e99289f5d93a8d2eacb71614117","kind":"text","ext":"yml","language":"yaml"}
 {"path":".gitignore","size":623,"sha256":"2462b8a9bac787d73b2d9a9969c32a29bfe32659a1b339776847e6a5e625fe8c","kind":"text","ext":"","language":"unknown"}
 {"path":".nvmrc","size":3,"sha256":"f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56","kind":"text","ext":"","language":"unknown"}
-{"path":".prettierignore","size":103,"sha256":"c460aadc057c3f5b13bca07ef4a4ac235f624f4090f58d1b2c5de7886e65978a","kind":"text","ext":"","language":"unknown"}
+{"path":".prettierignore","size":121,"sha256":"647d6edd6e190939103edfddd83056ad7d87d9c7acff2de006e32b60c70f2853","kind":"text","ext":"","language":"unknown"}
 {"path":".prettierrc","size":26,"sha256":"37055c98043228133ffcc5cad7bba5ef6c8f24698a551cae547b90f51d22e519","kind":"text","ext":"","language":"unknown"}
 {"path":".vscode/extensions.json","size":186,"sha256":"3c964d104722645e40d5a852dda2e6a59b12368ba9584e9a425e7e42c2a049a8","kind":"text","ext":"json","language":"json"}
 {"path":".vscode/launch.json","size":1671,"sha256":"5e43f91170a0af869ccb9955148d063053e8ab1713cf489fc97cc592a143b6c8","kind":"text","ext":"json","language":"json"}
@@ -299,7 +299,7 @@
 {"path":"tools/scripts/supabase-placeholder.mjs","size":2301,"sha256":"aced44be633b360cb82910caaffdc2f654f84ee4e1efd2a804122e7a321f0949","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/validate-project-tags.mjs","size":4168,"sha256":"c170c329df8d19190c986f33761176e4f4030211c1b63589cd64100166c48aaf","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/scripts/verify-module-boundaries.mjs","size":4703,"sha256":"806e1eada5364af32b009aecdb306b05252a36e02c338d82ba296d7eb27250f5","kind":"text","ext":"mjs","language":"javascript"}
-{"path":"tools/scripts/workspace-acceptance.mjs","size":13612,"sha256":"fa3d600335364b2cbddeb923476f0f42df63ffa7b4142f79696b8e8ac10d80a6","kind":"text","ext":"mjs","language":"javascript"}
+{"path":"tools/scripts/workspace-acceptance.mjs","size":13610,"sha256":"cc948611d34ef27165b418d035ea9e1bca46818b90288efc121c6a0c695aefc7","kind":"text","ext":"mjs","language":"javascript"}
 {"path":"tools/workspace-policy/project.json","size":1108,"sha256":"12eae101de3aa7667c2c5978773f69fee65fa3c63e4ca0b4b1d379c0c4150499","kind":"text","ext":"json","language":"json"}
 {"path":"tsconfig.base.json","size":520,"sha256":"b596d8b6005d58a3d6a6c51baec032c4d30f57b68f44cedc3b63ecca383f69f3","kind":"text","ext":"json","language":"json"}
 {"path":"tsconfig.json","size":1072,"sha256":"dab8da83dfddedfde210cb8ae2859ac0596ae5e7c2528c928f97626093b86293","kind":"text","ext":"json","language":"json"}
