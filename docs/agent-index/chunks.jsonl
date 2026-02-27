@@ -23,7 +23,7 @@
 {"path":".vscode/launch.json","start_line":1,"end_line":59,"chunk_hash":"34bcc0eb7e5b45a02a2eb010ccef19ffb36ce3f040721a29da7c98c3ebad53c4"}
 {"path":"AGENTS.md","start_line":1,"end_line":23,"chunk_hash":"43c3d6339bcfb7d70081e7448ea19c99792d96123aa0e2e2059836b7d8a2bfc4"}
 {"path":"apps/admin-e2e/package.json","start_line":1,"end_line":5,"chunk_hash":"a64eaadd4e77abd4845f8f4aa62adf3949064e6b2f6febd07f6cbdb87f300a42"}
-{"path":"apps/admin-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"558ad12059227d95f3f0501ad4702c20890be42c04b896461b4811e57bc4f99a"}
+{"path":"apps/admin-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"2f4936b9f130fda8f29bb1392ddf791f2c1f347a0582c9d4e0d84b74ec3ed9b2"}
 {"path":"apps/admin-e2e/project.json","start_line":1,"end_line":34,"chunk_hash":"6112bde4bedb7c432cea458a788f78a1f9b28c6c7d01de370109fa0602ebc2af"}
 {"path":"apps/admin-e2e/src/admin.spec.ts","start_line":1,"end_line":6,"chunk_hash":"0ad9c34afb7d3fb17e758903b05fa10ff1ed13c566c8c59407205d9864bb6645"}
 {"path":"apps/admin/.swcrc","start_line":1,"end_line":30,"chunk_hash":"982b289a0a9ff93f4ede96d030758fda86bf09b95e280d9986e7d9e026f96d5c"}
@@ -109,7 +109,7 @@
 {"path":"apps/supabase-secret/project.json","start_line":1,"end_line":67,"chunk_hash":"c0771b1e4c4eccd9914854b128a9d9f5b0f814bd5a008347a6a69bbf162d8fe8"}
 {"path":"apps/supabase-secret/supabase/.gitkeep","start_line":1,"end_line":1,"chunk_hash":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
 {"path":"apps/web-e2e/package.json","start_line":1,"end_line":5,"chunk_hash":"c0cf9b5e5369f7d4390d1a3b492b4689ac9b784783803115e840cee1b55c1457"}
-{"path":"apps/web-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"6e0a1dd0b4245e6d6747451d378d213ba52544be10bf56233069021a3969ef93"}
+{"path":"apps/web-e2e/playwright.config.ts","start_line":1,"end_line":17,"chunk_hash":"e5c049ab51017017df1e4d41512966756a729e52354116213ad29f2177bbd0c6"}
 {"path":"apps/web-e2e/project.json","start_line":1,"end_line":34,"chunk_hash":"64f6607b9e32836c5540ef003bb81e0472d76cb8bd8f281db0b0ecb766506fbc"}
 {"path":"apps/web-e2e/src/web.spec.ts","start_line":1,"end_line":6,"chunk_hash":"4de7086e66d7c5f025941c3038a6601f160d3453bbda4c0f1ad2b9ac051f74d7"}
 {"path":"apps/web/.swcrc","start_line":1,"end_line":30,"chunk_hash":"982b289a0a9ff93f4ede96d030758fda86bf09b95e280d9986e7d9e026f96d5c"}
