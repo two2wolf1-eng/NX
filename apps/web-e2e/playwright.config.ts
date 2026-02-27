@@ -9,7 +9,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx nx run web:dev --port=4300',
+    command: 'node ./node_modules/nx/bin/nx.js run web:dev --port=4300',
     url: 'http://127.0.0.1:4300',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
