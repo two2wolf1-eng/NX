@@ -1,5 +1,11 @@
 import { spawnSync } from 'node:child_process';
-import { accessSync, constants, promises as fs, readFileSync } from 'node:fs';
+import {
+  accessSync,
+  constants,
+  promises as fs,
+  readFileSync,
+  realpathSync,
+} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -441,21 +447,42 @@ function getTrackedFiles() {
 }
 
 function getNpmCliArgs(args) {
-  const npmCliPath = path.join(
-    path.dirname(process.execPath),
-    'node_modules',
-    'npm',
-    'bin',
-    'npm-cli.js',
-  );
+  const resolvedNodePath = resolveNodeExecutablePath();
+  const nodeDir = path.dirname(resolvedNodePath);
+  const candidatePaths = [
+    path.join(nodeDir, 'node_modules', 'npm', 'bin', 'npm-cli.js'),
+    path.join(nodeDir, '..', 'node_modules', 'npm', 'bin', 'npm-cli.js'),
+    path.join(nodeDir, '..', 'lib', 'node_modules', 'npm', 'bin', 'npm-cli.js'),
+    path.join(
+      nodeDir,
+      '..',
+      '..',
+      'lib',
+      'node_modules',
+      'npm',
+      'bin',
+      'npm-cli.js',
+    ),
+  ];
 
-  if (!pathExistsSync(npmCliPath)) {
+  const npmCliPath = candidatePaths.find((candidate) =>
+    pathExistsSync(candidate),
+  );
+  if (!npmCliPath) {
     throw new Error(
-      `npm CLI not found at expected path: ${npmCliPath}. Ensure Node 22.x with npm is installed.`,
+      `npm CLI not found for Node executable ${resolvedNodePath}. Checked: ${candidatePaths.join(', ')}. Ensure Node 22.x with npm is installed.`,
     );
   }
 
   return [npmCliPath, ...args];
+}
+
+function resolveNodeExecutablePath() {
+  try {
+    return realpathSync.native(process.execPath);
+  } catch {
+    return process.execPath;
+  }
 }
 
 function runCommand(command, args, display) {
